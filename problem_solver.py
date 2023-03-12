@@ -1,4 +1,8 @@
 # TODD
+# - [ ] se cantoner aux fonction qui ne renvoient q'un élément
+# -> plus besoin de mettre des , partout
+# -> plus facile de construire le nom des nouveaux éléments
+# -> supprimer la composante fun_name : fun.__name__ suffit ?
 # - [ ] reprendre l'interface du type liste pour virer les q, = sortie(l)
 # - [ ] reprendre la méthode résoudre de la classe solveur :
 # à réécrire

@@ -42,6 +42,9 @@ class Liste:
     def est_vide(self):
         return self.content == []
 
+    def est_singleton(self):
+        return len(self.content) == 1
+
     def tete(self):
         return Entier(self.content[0].n,
                       name = f"tete({self.name})")
