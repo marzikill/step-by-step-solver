@@ -20,11 +20,11 @@ from problèmes.tri_selection import problème_desc as pb5
 # P.joue()
 
 # supprime
-# P = Problème_Solver(5, pb4)
-# P.joue()
-# P.joue()
+P = Problème_Solver(5, pb4)
+P.joue()
+P.joue()
 
 # tri_sélection
-P = Problème_Solver(5, pb5)
-P.joue()
-P.joue()
+# P = Problème_Solver(5, pb5)
+# P.joue()
+# P.joue()

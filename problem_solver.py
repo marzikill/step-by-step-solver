@@ -75,6 +75,7 @@ class Problème_Solver:
 
 
     def vérifie_solution(self, solution):
+        print(f"Vérifie : {self.sol}{type(self.sol)} == {solution}{type(solution)}")
         return self.sol == solution
         
 
@@ -108,6 +109,7 @@ class Problème_Solver:
         print(f"Réponse proposée : {ob}\nRéponse attendue : {self.sol}")
         if self.vérifie_solution(ob):
             print("Bravo vous avez résolu le problème !")
+            print(f"Propose : {ob.name}")
             self.solved = True
         else:
             print("Ça n'est pas la bonne réponse, il faut continuer...")

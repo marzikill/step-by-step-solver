@@ -30,8 +30,9 @@ def minimum(l):
     """ Liste -> Liste """
     # Les Listes héritent de ce qu'il faut :
     m = min(l)
-    return Entier(m,
-                  name = f"minimum({l.name})"),
+    m.name = f"minimum({l.name})"
+    return m,
+                  
 
 # print(génère_entrée(5))
 # print(génère_entrée(5))

@@ -30,7 +30,7 @@ def génère_entrée(difficulté, type_element = [0]):
 def supprime(l, e):
     """ Liste, Entier -> Liste """
     if l.est_singleton():
-        return Liste([])
+        return Liste([]),
     else:
         t, q = l.divise()
         if e == t:
@@ -38,6 +38,7 @@ def supprime(l, e):
         else:
             res, = supprime(q, e)
             res, = res.ajoute(t)
+            res.name = f"supprime({l.name}, {e.name})"
             return res,
             
 # print(génère_entrée(5))
