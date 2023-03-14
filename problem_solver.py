@@ -23,7 +23,7 @@
 # - [X] rendre indépendant le processus de sélection et d'action ?
 
 from world import World
-from utils import select_from, listargs2str
+from utils import select_from, build_object_name, encapsulate
 
 class Problème_Solver:
     def __init__(self, n, problem_description):
@@ -54,12 +54,14 @@ class Problème_Solver:
 
 
     def generate_problem_data(self):
-        self.entrée = self.problem_desc["entrée_fun"](self.difficulté)
-        self.sol, = self.problem_desc["solution_fun"][0](*self.entrée)
-
+        in_fun = encapsulate(self.problem_desc["entrée_fun"])
+        self.entrée = in_fun(self.difficulté)
         self.monde.objects = {}
         for o in self.entrée:
             self.monde.add_object(o)
+
+        out_fun = encapsulate(self.problem_desc["solution_fun"][0])
+        self.sol = out_fun(*self.entrée)
 
 
     def info(self):
@@ -74,9 +76,10 @@ class Problème_Solver:
         # return info
 
 
-    def vérifie_solution(self, solution):
-        print(f"Vérifie : {self.sol}{type(self.sol)} == {solution}{type(solution)}")
-        return self.sol == solution
+    def vérifie_solution(self, sel):
+        # print(f"Vérifie : {self.sol}{type(self.sol)} == {sel}{type(sel)}")
+        print(f"Vérifie : {self.sol} == {sel}")
+        return all(sel[i] == self.sol[i] for i in range(len(sel)))
         
 
     def resoudre_funinfo(self):
@@ -92,28 +95,33 @@ class Problème_Solver:
                 data = [self.monde.objects[name] for name in data_names]
                 args = [ob] + data
                 args_names = [ob_name] + data_names
-                sol_aux, = fun(*args)
-                sol_aux.name = f"{fun_name}({listargs2str(args_names)})"
-                self.monde.add_object(sol_aux)
-                return [sol_aux]
+
+                sol_aux = fun(*args)
+                for i, o in enumerate(sol_aux):
+                    o.name = build_object_name(fun_name,
+                                               args_names,
+                                               len(sol_aux),
+                                               i)
+                return sol_aux
             else:
                 print("Le problème est trop dur !")
-                return []
+                return None
         return fun_cas_plus_simples, fun_name, 0
 
 
     def propose_solution(self):
         """ Sélectionne un objet et vérifie qu'il s'agit d'une
         solution du problème. """
-        ob = self.monde.objects[self.monde.select_object_name()]
-        print(f"Réponse proposée : {ob}\nRéponse attendue : {self.sol}")
-        if self.vérifie_solution(ob):
+        sel = [self.monde.objects[self.monde.select_object_name()]
+               for _ in range(len(self.sol))]
+        print(f"Réponse proposée : {sel}\nRéponse attendue : {self.sol}")
+        if self.vérifie_solution(sel):
             print("Bravo vous avez résolu le problème !")
-            print(f"Propose : {ob.name}")
+            print(f"Propose : {[o.name for o in sel]}")
             self.solved = True
         else:
             print("Ça n'est pas la bonne réponse, il faut continuer...")
-        return []
+        return None
 
     def select_apply_operation(self):
         print(self)

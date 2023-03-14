@@ -1,4 +1,4 @@
-from utils import select_from
+from utils import select_from, encapsulate
 
 class World:
     def __init__(self):
@@ -13,9 +13,11 @@ class World:
         print(f"\nObjets courants :\n{self}")
 
     def select_object_name(self):
-        return select_from(self.objects)
-            
+        return select_from(self.objects,
+                           display= lambda n: f"{n} = {self.objects[n]}")
+
     def add_object(self, object):
+        # print(f"Ajout de {object} de type {type(object)}")
         self.objects[object.name] = object
 
     def del_object(self, object_name):
@@ -39,9 +41,12 @@ class World:
             return self.apply_add(fun, data)
         self.functions[method_name] = method_with_selection
 
-    def apply_add(self, fun, data):
+    def apply_add(self, fun, data, object_name=""):
+        fun = encapsulate(fun)
         res = fun(*data)
         for ob in res:
+            if object_name:
+                ob.name = object_name
             self.add_object(ob)
         return res
             
