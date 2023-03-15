@@ -5,6 +5,8 @@ from problèmes.minimum import problème_desc as pb3
 from problèmes.supprime import problème_desc as pb4
 from problèmes.tri_selection import problème_desc as pb5
 from problèmes.divise import problème_desc as pb6
+from problèmes.fusionne import problème_desc as pb7
+from problèmes.tri_fusion import problème_desc as pb8
 
 # Insère triée
 # P = Problème_Solver(5, pb1)
@@ -31,6 +33,16 @@ from problèmes.divise import problème_desc as pb6
 # P.joue()
 
 # divise
-P = Problème_Solver(5, pb6)
+# P = Problème_Solver(5, pb6)
+# P.joue()
+# P.joue()
+
+# fusionne
+# P = Problème_Solver(5, pb7)
+# P.joue()
+# P.joue()
+
+# tri fusion
+P = Problème_Solver(5, pb8)
 P.joue()
 P.joue()

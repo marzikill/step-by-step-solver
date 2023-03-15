@@ -1,3 +1,5 @@
+from inspect import signature
+
 def select_from(iterable, prompt = "Sélection : ", display = None):
     assoc = { i:e for i, e in enumerate(iterable)}
     if not display:
@@ -15,6 +17,7 @@ def build_object_name(fun_name, args_names, n, i):
         return f"{fun_name}({listargs2str(args_names)})"
     return f"{fun_name}({listargs2str(args_names)})[{i}]"
 
+
 def encapsulate(f):
     # S'assure que la fonction f renvoie un tuple
     def wrapper(*args):
@@ -26,13 +29,7 @@ def encapsulate(f):
         return rep
     return wrapper
 
-# @encapsulate
-# def f(x):
-#     return x + 1
+def count_args(f):
+    sig = signature(f)
+    return len(sig.parameters)
 
-# @encapsulate
-# def g(x):
-#     return x + 1, x + 2
-
-# print(f(1))
-# print(g(1))
