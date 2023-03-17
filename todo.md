@@ -1,5 +1,4 @@
 # TODO
-- [ ] régler le décompte des commits sur github
 - [ ] reprendre les anciens problèmes avec la nouvelle interface
 - [ ] interface terminal
 - [ ] écrire la documentation et présenter le projet
@@ -24,3 +23,5 @@
 -> supprimer la composante fun_name : fun.__name__ suffit ?
 - [X] reprendre l'interface du type liste pour virer les q, = sortie(l)
 - [X] reprendre la méthode résoudre de la classe solveur : à réécrire
+- [X] ajouter un mécanisme de calcul de la complexité de l'entrée (mode récursif)
+- [X] régler le décompte des commits sur github

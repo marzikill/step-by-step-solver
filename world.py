@@ -1,5 +1,8 @@
 from utils import select_from, encapsulate, count_args, build_object_name
 
+class Selector:
+    pass 
+
 class World:
     def __init__(self):
         self.objects = {}
@@ -39,18 +42,18 @@ class World:
             return self.apply_add(fun, data, fun_name = fun_name)
         self.functions[fun_name] = fun_with_selection
 
-    def add_solfunction(self, fun_info):
+    def add_solfunction(self, fun_info, rec_mode, difficulté):
         fun, fun_name = fun_info
         num_args = count_args(fun)
-        def fun_cas_plus_simples(*args):
-            if len(args[0]) < self.difficulté:
+        def fun_seuillée(*args):
+            if rec_mode(*args) < difficulté:
                 return fun(*args)
             else:
                 print("Le problème est trop dur !")
                 return None
         def fun_with_selection():
             data = self.sel_objects(num_args)
-            return self.apply_add(fun, data, fun_name = fun_name)
+            return self.apply_add(fun_seuillée, data, fun_name = fun_name)
         self.functions[fun_name] = fun_with_selection
 
     def add_method(self, fun_name):

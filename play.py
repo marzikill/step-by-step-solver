@@ -39,7 +39,7 @@ from problèmes.tri_insertion_iter import problème_desc as pb9
 # P.joue()
 
 # fusionne
-# P = Problème_Solver(5, pb7)
+# P = Problème_Solver(5, Problème(**pb7))
 # P.joue()
 # P.joue()
 
@@ -49,5 +49,5 @@ from problèmes.tri_insertion_iter import problème_desc as pb9
 # P.joue()
 
 # tri insertion
-# P = Problème_Solver(5, pb9)
-# P.joue()
+P = Problème_Solver(5, Problème(**pb9))
+P.joue()

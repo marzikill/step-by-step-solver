@@ -12,7 +12,7 @@ class Problème:
     problem_mets: list = ()
     problem_funs: list = ()
     solution_fun: tuple = ()
-    rec_mode: bool = True
+    rec_mode: 'typing.Any' = None
              
 class Problème_Solver:
     def __init__(self, n, problem):
@@ -29,7 +29,9 @@ class Problème_Solver:
 
         # Ajout des fonctions et méthodes du solveur
         if problem.rec_mode:
-            self.monde.add_solfunction(problem.solution_fun)
+            self.monde.add_solfunction(problem.solution_fun,
+                                       problem.rec_mode,
+                                       self.difficulté)
         solver_funs = [(self.propose_solution, "propose"),
                        (self.info, "info")]
         for fun_info in solver_funs:

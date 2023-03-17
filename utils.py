@@ -1,9 +1,9 @@
 from inspect import signature
 
-def select_from(iterable, prompt = "Sélection : ", display = None):
+def select_from(iterable, prompt = "Sélection : ", display = None, autosel = True):
     assoc = { i:e for i, e in enumerate(iterable)}
-    # if len(assoc) == 1:
-    #     return assoc[0]
+    if len(assoc) == 1 and autosel:
+        return assoc[0]
     if not display:
         display = lambda e: assoc[i]
     for i in assoc:

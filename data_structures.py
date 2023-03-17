@@ -1,5 +1,18 @@
+from abc import ABC, abstractmethod
+
 class UnsupportedOperation(Exception):
     pass
+
+class AbstractDS(ABC):
+    @abstractmethod
+    def __repr__(self): ...
+
+    @abstractmethod
+    def __eq__(self, o): ...
+
+    @abstractmethod
+    def __len__(self): ...
+
 
 class Entier:
     def __init__(self, n, name = ""):
@@ -18,7 +31,7 @@ class Entier:
 
 
 
-class Liste:
+class Liste(AbstractDS):
     def __init__(self, content, name = ""):
         self.name = name
         self.content = content
@@ -39,7 +52,7 @@ class Liste:
     def __getitem__(self, item): return self.content[item]
     def __setitem__(self, item, val): self.content[item] = val
 
-    # Interface 
+    # Interface d'une liste
     def est_vide(self):
         return self.content == []
 
@@ -70,4 +83,3 @@ class Liste:
         l = [2, 5, 6] -> tete(l) = 2, queue(l) = [5, 6] """
         return self.tete(), self.queue()
         # return [self.tete(), self.queue()]
-
