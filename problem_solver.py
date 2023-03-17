@@ -1,27 +1,3 @@
-# TODD
-# - [ ] écrire la documentation et présenter le projet
-# - [ ] reprendre les anciens problèmes avec la nouvelle interface
-# - [ ] ajouter d'autres problèmes
-# - [ ] ajouter une fonctionnalité d'annulation
-# - [ ] ajouter un nombre maximum d'objets dans World
-
-# - [~] ajouter les docstring des fonctions
-# - [~] ajouter une fonctionnalité de destruction d'objet
-# - +afficher les docstring dans Problème_minimum.apply_operation+
-#   -> ajouter une méthode info
-# - [X] une fois le problème de difficulté n résolu, enchaîner avec n + 1
-# - [X] rendre la classe Problème plus générale
-# - [X] rendre la classe Monde plus générale et supporter d'autres structures de données 
-# - [X] ajout de fonctions arbitraires à l'interface de manipulation
-# - [X] self.supported_opérations : pas très beau. À déplacer dans World
-# - [X] rendre indépendant le processus de sélection et d'action ?
-# - [X] se cantoner aux fonction qui ne renvoient q'un élément
-# -> plus besoin de mettre des , partout
-# -> plus facile de construire le nom des nouveaux éléments
-# -> supprimer la composante fun_name : fun.__name__ suffit ?
-# - [X] reprendre l'interface du type liste pour virer les q, = sortie(l)
-# - [X] reprendre la méthode résoudre de la classe solveur :
-# à réécrire
 
 from world import World
 from dataclasses import dataclass
