@@ -1,4 +1,5 @@
 # TODO
+- [ ] régler le décompte des commits sur github
 - [ ] reprendre les anciens problèmes avec la nouvelle interface
 - [ ] interface terminal
 - [ ] écrire la documentation et présenter le projet
