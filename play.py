@@ -1,4 +1,4 @@
-from problem_solver import Problème_Solver
+from problem_solver import Problème_Solver, Problème
 from problèmes.insere_triée import problème_desc as pb1
 from problèmes.tri_insertion import problème_desc as pb2
 from problèmes.minimum import problème_desc as pb3
@@ -7,18 +7,19 @@ from problèmes.tri_selection import problème_desc as pb5
 from problèmes.divise import problème_desc as pb6
 from problèmes.fusionne import problème_desc as pb7
 from problèmes.tri_fusion import problème_desc as pb8
+from problèmes.tri_insertion_iter import problème_desc as pb9
 
 # Insère triée
-# P = Problème_Solver(5, pb1)
+# P = Problème_Solver(5, Problème(**pb1))
 # P.joue()
 # P.joue()
 
 # Tri insertion
-# P = Problème_Solver(5, pb2)
+# P = Problème_Solver(5, Problème(**pb2))
 # P.joue()
 
 # minimum
-# P = Problème_Solver(5, pb3)
+# P = Problème_Solver(5, Problème(**pb3))
 # P.joue()
 # P.joue()
 
@@ -43,6 +44,10 @@ from problèmes.tri_fusion import problème_desc as pb8
 # P.joue()
 
 # tri fusion
-P = Problème_Solver(5, pb8)
-P.joue()
-P.joue()
+# P = Problème_Solver(5, pb8)
+# P.joue()
+# P.joue()
+
+# tri insertion
+# P = Problème_Solver(5, pb9)
+# P.joue()

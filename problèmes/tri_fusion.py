@@ -35,5 +35,6 @@ problème_desc = {
     "entrée_fun": génère_entrée,
     "problem_mets": [],
     "problem_funs": [(divise, "divise_en_2"), (fusionne, "fusionne")],
-    "solution_fun": (tri_fusion, "tri_fusion")
+    "solution_fun": (tri_fusion, "tri_fusion"),
+    "rec_mode": True
 }

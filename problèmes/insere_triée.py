@@ -33,35 +33,18 @@ def génère_entrée(difficulté, type_element = [0]):
 def insère_triée(l, e):
     """ Liste, Entier -> Liste """
     # Les Listes héritent de ce qu'il faut :
-    L = Liste(sorted(l.ajoute(e)[0]),
-              name = f"insère_triée({l.name}, {e.name})")
-    return L,
-
-    # Plus simplement avec l'interface du type Liste
-    # if l.est_vide():
-    #     return Liste([e])
-    # else:
-    #     if l.tete() > e:
-    #         return l.ajoute(e)
-    #     else:
-    #         t, q = l.divise()
-    #         q, = insère_triée(q, e)
-    #         return q.ajoute(t)
-
-# print(génère_entrée(5))
-# print(insère_triée(*génère_entrée(5)))
-# print(génère_entrée(5))
-# print(insère_triée(*génère_entrée(5)))
-# print(minimum(génère_entrée(5)[0]))
-    
+    l = l.ajoute(e)
+    l = sorted(l)
+    # L = Liste(sorted(l.ajoute(e)[0]),
+    #           name = f"insère_triée({l.name}, {e.name})")
+    return Liste(l)
 
 problème_desc = {
     "name": problem_name,
     "type": problem_type,
-    "args_num": problem_args,
     "doc": problem_doc,
     "entrée_fun": génère_entrée,
-    "problem_mets": [("divise", 0), ("ajoute", 1)],
+    "problem_mets": ["divise", "ajoute"],
     "problem_funs": [],
-    "solution_fun": (insère_triée, "insère_triée", 2)
+    "solution_fun": (insère_triée, "insère_triée")
 }

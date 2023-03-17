@@ -17,35 +17,20 @@ def génère_entrée(difficulté):
     # la tête est à insérer vers la fin de la liste
     res = [Entier(max(res).n - random.randint(1, 5))] + res
     return Liste(res,
-                  name = "l"),
+                  name = "l")
 
 def tri_insertion(l):
     """ Liste -> Liste """
     # Les Listes héritent de ce qu'il faut :
-    # L = Liste(sorted(l))
-    # return L,
-
-    # Plus simplement avec l'interface du type Liste
-    if l.est_vide() or l.queue().est_vide() :
-        return l,
-    else:
-        t, q = l.divise()
-        q, = tri_insertion(q)
-        q, = insère_triée(q, t)
-        return q,
-
-# print(génère_entrée(5))
-# n = 2
-# print(tri_insertion(*génère_entrée(n)))
-# print(type(tri_insertion(*génère_entrée(n))))
+    L = Liste(sorted(l))
+    return L
 
 problème_desc = {
     "name": problem_name,
     "type": problem_type,
-    "args_num": problem_args,
     "doc": problem_doc,
     "entrée_fun": génère_entrée,
-    "problem_mets": [("divise", 0)],
-    "problem_funs": [(insère_triée, "insère_triée", 2)],
-    "solution_fun": (tri_insertion, "tri_insertion", 1)
+    "problem_mets": ["divise"],
+    "problem_funs": [(insère_triée, "insère_triée")],
+    "solution_fun": (tri_insertion, "tri_insertion")
 }
