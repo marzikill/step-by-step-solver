@@ -19,6 +19,9 @@ def génère_entrée(difficulté, type_element = [0]):
                     for _ in range(difficulté - n1)])
     return Liste(l1, name = "l1"), Liste(l2, name = "l2")
 
+def complexité_entrée(l1, l2):
+    return len(l1) + len(l2)
+
 def fusionne(l1, l2):
     """ Liste, Liste -> Liste """
     if l1.est_vide() and l2.est_vide():
@@ -45,9 +48,9 @@ def fusionne(l1, l2):
 problème_desc = {
     "name": problem_name,
     "type": problem_type,
-    "args_num": problem_args,
     "doc": problem_doc,
     "entrée_fun": génère_entrée,
+    "rec_mode": complexité_entrée,
     "problem_mets": ["divise", "ajoute"],
     "problem_funs": [],
     "solution_fun": (fusionne, "fusionne")

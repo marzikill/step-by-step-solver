@@ -1,17 +1,5 @@
-from abc import ABC, abstractmethod
-
 class UnsupportedOperation(Exception):
     pass
-
-class AbstractDS(ABC):
-    @abstractmethod
-    def __repr__(self): ...
-
-    @abstractmethod
-    def __eq__(self, o): ...
-
-    @abstractmethod
-    def __len__(self): ...
 
 
 class Entier:
@@ -31,7 +19,7 @@ class Entier:
 
 
 
-class Liste(AbstractDS):
+class Liste:
     def __init__(self, content, name = ""):
         self.name = name
         self.content = content
