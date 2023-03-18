@@ -28,10 +28,11 @@ def divise_en_2(l):
         l2 = l2.ajoute(l.queue().tete())
         return l1, l2
 
-Problème(name = problem_name,
-         type = problem_type,
-         doc = problem_doc,
-         entrée_fun = génère_entrée,
-         problem_mets = ["divise", "ajoute"],
-         problem_funs = [],
-         solution_fun = (divise_en_2, "divise_en_2"))
+if not __name__:
+    Problème(name = problem_name,
+            type = problem_type,
+            doc = problem_doc,
+            entrée_fun = génère_entrée,
+            problem_mets = ["divise", "ajoute"],
+            problem_funs = [],
+            solution_fun = (divise_en_2, "divise_en_2"))

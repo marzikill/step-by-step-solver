@@ -63,10 +63,11 @@ def tri_insertion(tab):
     return tab
 
 
-Problème(name = problem_name,
-         type = problem_type,
-         doc = problem_doc,
-         entrée_fun = génère_entrée,
-         problem_mets = ["échange_gauche", "dépose"],
-         problem_funs = [],
-         solution_fun = (tri_insertion, "tri_insertion"))
+if not __name__:
+    Problème(name = problem_name,
+            type = problem_type,
+            doc = problem_doc,
+            entrée_fun = génère_entrée,
+            problem_mets = ["échange_gauche", "dépose"],
+            problem_funs = [],
+            solution_fun = (tri_insertion, "tri_insertion"))

@@ -37,12 +37,13 @@ def fusionne(l1, l2):
             reste = fusionne(l1, xs2)
             return reste.ajoute(x2)
 
-Problème(name = problem_name,
-         type = problem_type,
-         doc = problem_doc,
-         entrée_fun = génère_entrée,
-         problem_mets = ["divise", "ajoute"],
-         problem_funs = [],
-         solution_fun = (fusionne, "fusionne"),
-         rec_mode = lambda l1, l2: len(l1) + len(l2))
+if not __name__:
+    Problème(name = problem_name,
+            type = problem_type,
+            doc = problem_doc,
+            entrée_fun = génère_entrée,
+            problem_mets = ["divise", "ajoute"],
+            problem_funs = [],
+            solution_fun = (fusionne, "fusionne"),
+            rec_mode = lambda l1, l2: len(l1) + len(l2))
 

@@ -25,11 +25,12 @@ def tri_insertion(l):
     L = Liste(sorted(l))
     return L
 
-Problème(name = problem_name,
-         type = problem_type,
-         doc = problem_doc,
-         entrée_fun = génère_entrée,
-         problem_mets = ["divise"],
-         problem_funs = [(insère_triée, "insère_triée")],
-         solution_fun = (tri_insertion, "tri_insertion"),
-         rec_mode = len)
+if not __name__:
+    Problème(name = problem_name,
+            type = problem_type,
+            doc = problem_doc,
+            entrée_fun = génère_entrée,
+            problem_mets = ["divise"],
+            problem_funs = [(insère_triée, "insère_triée")],
+            solution_fun = (tri_insertion, "tri_insertion"),
+            rec_mode = len)

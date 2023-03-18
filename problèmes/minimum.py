@@ -30,11 +30,12 @@ def minimum(l):
     m = min(l)
     return m
                   
-Problème(name = problem_name,
-         type = problem_type,
-         doc = problem_doc,
-         entrée_fun = génère_entrée,
-         problem_mets = ["divise"],
-         problem_funs = [],
-         solution_fun = (minimum, "minimum"),
-         rec_mode = len)
+if not __name__:
+    Problème(name = problem_name,
+            type = problem_type,
+            doc = problem_doc,
+            entrée_fun = génère_entrée,
+            problem_mets = ["divise"],
+            problem_funs = [],
+            solution_fun = (minimum, "minimum"),
+            rec_mode = len)

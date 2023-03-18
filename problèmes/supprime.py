@@ -42,11 +42,12 @@ def supprime(l, e):
             res.name = f"supprime({l.name}, {e.name})"
             return res
             
-Problème(name = problem_name,
-         type = problem_type,
-         doc = problem_doc,
-         entrée_fun = génère_entrée,
-         problem_mets = ["divise", "ajoute"],
-         problem_funs = [],
-         solution_fun = (supprime, "supprime"),
-         rec_mode = lambda l, e: len(l))
+if not __name__:
+    Problème(name = problem_name,
+            type = problem_type,
+            doc = problem_doc,
+            entrée_fun = génère_entrée,
+            problem_mets = ["divise", "ajoute"],
+            problem_funs = [],
+            solution_fun = (supprime, "supprime"),
+            rec_mode = lambda l, e: len(l))

@@ -19,6 +19,6 @@ def import_submodules(start_path, include_start_directory=True):
 import_submodules("problèmes")
 print([e for e in ProblemIndex])
 
-p = Problème_Solver(5, ProblemIndex["supprime"])
-p.joue()
+# p = Problème_Solver(5, ProblemIndex["supprime"])
+# p.joue()
 

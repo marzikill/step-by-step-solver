@@ -15,9 +15,10 @@ class Problème:
     rec_mode: 'typing.Any' = None
 
     def __post_init__(self):
-        if not ProblemIndex.get(self.name):
-            # print(f"Enregistrement de {self.name}\n{self.doc}")
-            ProblemIndex[self.name] = self
+        if ProblemIndex.get(self.name):
+            print(f"Problème {self.name} déjà enregistré !")
+            return 
+        ProblemIndex[self.name] = self
              
 class Problème_Solver:
     def __init__(self, n, problem):

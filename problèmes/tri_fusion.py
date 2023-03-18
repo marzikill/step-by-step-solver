@@ -24,11 +24,12 @@ def tri_fusion(l):
         l1, l2 = tri_fusion(l1), tri_fusion(l2)
         return fusionne(l1, l2)
 
-Problème(name = problem_name,
-         type = problem_type,
-         doc = problem_doc,
-         entrée_fun = génère_entrée,
-         problem_mets = [],
-         problem_funs = [(divise_en_2, "divise_en_2"), (fusionne, "fusionne")],
-         solution_fun = (tri_fusion, "tri_fusion"),
-         rec_mode = len)
+if not __name__:
+    Problème(name = problem_name,
+            type = problem_type,
+            doc = problem_doc,
+            entrée_fun = génère_entrée,
+            problem_mets = [],
+            problem_funs = [(divise_en_2, "divise_en_2"), (fusionne, "fusionne")],
+            solution_fun = (tri_fusion, "tri_fusion"),
+            rec_mode = len)

@@ -25,12 +25,12 @@ def tri_sélection(l):
     L = Liste(sorted(l))
     return L
             
-
-Problème(name = problem_name,
-         type = problem_type,
-         doc = problem_doc,
-         entrée_fun = génère_entrée,
-         problem_mets = ["divise"],
-         problem_funs = [(supprime, "supprime"), (minimum, "minimum")],
-         solution_fun = (minimum, "minimum"),
-         rec_mode = len)
+if not __name__:
+    Problème(name = problem_name,
+            type = problem_type,
+            doc = problem_doc,
+            entrée_fun = génère_entrée,
+            problem_mets = ["divise"],
+            problem_funs = [(supprime, "supprime"), (minimum, "minimum")],
+            solution_fun = (minimum, "minimum"),
+            rec_mode = len)

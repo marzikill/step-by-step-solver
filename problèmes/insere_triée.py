@@ -37,11 +37,12 @@ def insère_triée(l, e):
     #           name = f"insère_triée({l.name}, {e.name})")
     return Liste(l)
 
-Problème(name = problem_name,
-         type = problem_type,
-         doc = problem_doc,
-         entrée_fun = génère_entrée,
-         problem_mets = ["divise", "ajoute"],
-         problem_funs = [],
-         solution_fun = (insère_triée, "insère_triée"),
-         rec_mode = lambda l, e: len(l))
+if not __name__:
+    Problème(name = problem_name,
+            type = problem_type,
+            doc = problem_doc,
+            entrée_fun = génère_entrée,
+            problem_mets = ["divise", "ajoute"],
+            problem_funs = [],
+            solution_fun = (insère_triée, "insère_triée"),
+            rec_mode = lambda l, e: len(l))
