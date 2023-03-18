@@ -1,4 +1,5 @@
 import random
+from problem_solver import Problème
 from data_structures import Liste, Entier
 
 problem_name = "minimum"
@@ -29,14 +30,11 @@ def minimum(l):
     m = min(l)
     return m
                   
-
-problème_desc = {
-    "name": problem_name,
-    "type": problem_type,
-    "doc": problem_doc,
-    "entrée_fun": génère_entrée,
-    "problem_mets": ["divise"],
-    "problem_funs": [],
-    "solution_fun": (minimum, "minimum"),
-    "rec_mode": True
-}
+Problème(name = problem_name,
+         type = problem_type,
+         doc = problem_doc,
+         entrée_fun = génère_entrée,
+         problem_mets = ["divise"],
+         problem_funs = [],
+         solution_fun = (minimum, "minimum"),
+         rec_mode = len)

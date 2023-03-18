@@ -1,53 +1,24 @@
-from problem_solver import Problème_Solver, Problème
-from problèmes.insere_triée import problème_desc as pb1
-from problèmes.tri_insertion import problème_desc as pb2
-from problèmes.minimum import problème_desc as pb3
-from problèmes.supprime import problème_desc as pb4
-from problèmes.tri_selection import problème_desc as pb5
-from problèmes.divise import problème_desc as pb6
-from problèmes.fusionne import problème_desc as pb7
-from problèmes.tri_fusion import problème_desc as pb8
-from problèmes.tri_insertion_iter import problème_desc as pb9
+from importlib import util
+from os import path
+from glob import glob
+from problem_solver import ProblemIndex, Problème_Solver
 
-# Insère triée
-# P = Problème_Solver(5, Problème(**pb1))
-# P.joue()
-# P.joue()
 
-# Tri insertion
-# P = Problème_Solver(5, Problème(**pb2))
-# P.joue()
+# Récupérer tous les fichiers pythons présents dans ./problèmes
+# https://stackoverflow.com/questions/57878744/how-do-i-dynamically-import-all-py-files-from-a-given-directory-and-all-sub-di
+def import_submodules(start_path, include_start_directory=True):
+    start_path = path.abspath(start_path)
+    pattern = '**/*.py' if include_start_directory else '*/**/*.py'
+    py_files = [f for f in glob(path.join(start_path, pattern), recursive=True) if not f.endswith('__.py')]
 
-# minimum
-# P = Problème_Solver(5, Problème(**pb3))
-# P.joue()
-# P.joue()
+    for py_file in py_files:
+        spec = util.spec_from_file_location('', py_file)
+        module = util.module_from_spec(spec)
+        spec.loader.exec_module(module)
 
-# supprime
-# P = Problème_Solver(5, pb4)
-# P.joue()
-# P.joue()
+import_submodules("problèmes")
+print([e for e in ProblemIndex])
 
-# tri_sélection
-# P = Problème_Solver(5, pb5)
-# P.joue()
-# P.joue()
+# p = Problème_Solver(5, ProblemIndex["fusionne"])
+# p.joue()
 
-# divise
-# P = Problème_Solver(5, pb6)
-# P.joue()
-# P.joue()
-
-# fusionne
-# P = Problème_Solver(5, Problème(**pb7))
-# P.joue()
-# P.joue()
-
-# tri fusion
-# P = Problème_Solver(5, pb8)
-# P.joue()
-# P.joue()
-
-# tri insertion
-P = Problème_Solver(5, Problème(**pb9))
-P.joue()

@@ -1,12 +1,10 @@
 import random
+from problem_solver import Problème
 from data_structures import Liste, Entier
 
 problem_name = "insere_trie"
 problem_type = "liste, int -> liste"
-problem_args = 2
-problem_doc = "Étant donné une liste l triée par ordre croissant et un élément e\
-renvoyer la liste où l'élément e a été inséré dans l de telle sorte que la liste\
-résultante soit triée"
+problem_doc = "Étant donné une liste l triée par ordre croissant et un élément e, renvoyer la liste où l'élément e a été inséré dans l de telle sorte que la liste, résultante soit triée"
 difficulté_type = "la longueur de la liste l"
 
 def génère_entrée(difficulté, type_element = [0]):
@@ -39,12 +37,11 @@ def insère_triée(l, e):
     #           name = f"insère_triée({l.name}, {e.name})")
     return Liste(l)
 
-problème_desc = {
-    "name": problem_name,
-    "type": problem_type,
-    "doc": problem_doc,
-    "entrée_fun": génère_entrée,
-    "problem_mets": ["divise", "ajoute"],
-    "problem_funs": [],
-    "solution_fun": (insère_triée, "insère_triée")
-}
+Problème(name = problem_name,
+         type = problem_type,
+         doc = problem_doc,
+         entrée_fun = génère_entrée,
+         problem_mets = ["divise", "ajoute"],
+         problem_funs = [],
+         solution_fun = (insère_triée, "insère_triée"),
+         rec_mode = lambda l, e: len(l))

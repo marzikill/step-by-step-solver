@@ -1,9 +1,9 @@
 import random
+from problem_solver import Problème
 from data_structures import Liste, Entier
 
 problem_name = "fusionne"
 problem_type = "liste, liste -> liste"
-problem_args = 1
 problem_doc = "Étant donné deux listes l1 et l2, supposées triées par ordre croissant, renvoie la liste l constituée des éléments de l1 et l2 triés par ordre croissant."
 difficulté_type = "la longueur de la liste l"
 
@@ -18,9 +18,6 @@ def génère_entrée(difficulté, type_element = [0]):
     l2  = sorted([Entier(random.randint(-10, 10))
                     for _ in range(difficulté - n1)])
     return Liste(l1, name = "l1"), Liste(l2, name = "l2")
-
-def complexité_entrée(l1, l2):
-    return len(l1) + len(l2)
 
 def fusionne(l1, l2):
     """ Liste, Liste -> Liste """
@@ -40,18 +37,11 @@ def fusionne(l1, l2):
             reste = fusionne(l1, xs2)
             return reste.ajoute(x2)
         
-# n = 2
-# l1, l2 = Liste([Entier(-2), Entier(10)]), Liste([Entier(3), Entier(6), Entier(7)])
-# print(l1, l2)
-# print(fusionne(l1, l2))
-
-problème_desc = {
-    "name": problem_name,
-    "type": problem_type,
-    "doc": problem_doc,
-    "entrée_fun": génère_entrée,
-    "rec_mode": complexité_entrée,
-    "problem_mets": ["divise", "ajoute"],
-    "problem_funs": [],
-    "solution_fun": (fusionne, "fusionne")
-}
+Problème(name = problem_name,
+         type = problem_type,
+         doc = problem_doc,
+         entrée_fun = génère_entrée,
+         problem_mets = ["divise", "ajoute"],
+         problem_funs = [],
+         solution_fun = (fusionne, "fusionne"),
+         rec_mode = lambda l1, l2: len(l1) + len(l2))

@@ -1,18 +1,23 @@
-
 from world import World
 from dataclasses import dataclass
 from utils import encapsulate, listargs2str, count_args
 
+ProblemIndex = dict()
 @dataclass
 class Problème:
     name: str = "Problem name"
     type: str = "Problème type"
     doc: str = "Problème documentation"
     entrée_fun: 'typing.Any' = "fonction"
+    solution_fun: tuple = ()
     problem_mets: list = ()
     problem_funs: list = ()
-    solution_fun: tuple = ()
     rec_mode: 'typing.Any' = None
+
+    def __post_init__(self):
+        if ProblemIndex.get(self.name):
+            print(f"Attention, redéfinition de {self.name}")
+        ProblemIndex[self.name] = self
              
 class Problème_Solver:
     def __init__(self, n, problem):

@@ -1,5 +1,15 @@
 # TODO
-- [ ] reprendre les anciens problèmes avec la nouvelle interface
+- [ ] tester les problèmes 
+	- [ ] tri_fusion.py
+	- [ ] tri_insertion.py
+	- [ ] divise.y
+	- [ ] minimum.py
+	- [ ] fusionne.py 
+	- [ ] supprime.py 
+	- [ ] insere_triée.py 
+	- [ ] tri_selection.py 
+	- [ ] tri_insertion_iter.py
+
 - [ ] interface terminal
 - [ ] écrire la documentation et présenter le projet
 - Erreurs utilisateur :
@@ -25,3 +35,4 @@
 - [X] reprendre la méthode résoudre de la classe solveur : à réécrire
 - [X] ajouter un mécanisme de calcul de la complexité de l'entrée (mode récursif)
 - [X] régler le décompte des commits sur github
+- [X] reprendre les anciens problèmes avec la nouvelle interface

@@ -77,4 +77,3 @@ class World:
                                         i)
             self.add_object(ob)
         return res
-            

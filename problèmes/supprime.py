@@ -1,4 +1,5 @@
 import random
+from problem_solver import Problème
 from data_structures import Liste, Entier
 
 problem_name = "supprime"
@@ -41,19 +42,11 @@ def supprime(l, e):
             res.name = f"supprime({l.name}, {e.name})"
             return res,
             
-# print(génère_entrée(5))
-# print(génère_entrée(5))
-# n = 2
-# print(tri_insertion(*génère_entrée(n)))
-# print(type(tri_insertion(*génère_entrée(n))))
-
-problème_desc = {
-    "name": problem_name,
-    "type": problem_type,
-    "args_num": problem_args,
-    "doc": problem_doc,
-    "entrée_fun": génère_entrée,
-    "problem_mets": [("divise", 0), ("ajoute", 1)],
-    "problem_funs": [],
-    "solution_fun": (supprime, "supprime", 2)
-}
+Problème(name = problem_name,
+         type = problem_type,
+         doc = problem_doc,
+         entrée_fun = génère_entrée,
+         problem_mets = ["divise", "ajoute"],
+         problem_funs = [],
+         solution_fun = (supprime, "supprime"),
+         rec_mode = len)
