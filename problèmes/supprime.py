@@ -31,16 +31,16 @@ def génère_entrée(difficulté, type_element = [0]):
 def supprime(l, e):
     """ Liste, Entier -> Liste """
     if l.est_singleton():
-        return Liste([]),
+        return Liste([])
     else:
         t, q = l.divise()
         if e == t:
-            return q,
+            return q
         else:
-            res, = supprime(q, e)
-            res, = res.ajoute(t)
+            res = supprime(q, e)
+            res = res.ajoute(t)
             res.name = f"supprime({l.name}, {e.name})"
-            return res,
+            return res
             
 Problème(name = problem_name,
          type = problem_type,
@@ -49,4 +49,4 @@ Problème(name = problem_name,
          problem_mets = ["divise", "ajoute"],
          problem_funs = [],
          solution_fun = (supprime, "supprime"),
-         rec_mode = len)
+         rec_mode = lambda l, e: len(l))

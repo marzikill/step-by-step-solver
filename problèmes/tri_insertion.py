@@ -31,5 +31,5 @@ Problème(name = problem_name,
          entrée_fun = génère_entrée,
          problem_mets = ["divise"],
          problem_funs = [(insère_triée, "insère_triée")],
-         solution_fun = (tri_insertion, "tri_insertion")
+         solution_fun = (tri_insertion, "tri_insertion"),
          rec_mode = len)
