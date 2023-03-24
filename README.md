@@ -1,24 +1,4 @@
 
-# Table of Contents
-
-1.  [Overview](#org5a3da6a)
-2.  [Defining a problem](#orgcaad76e)
-    1.  [Generating examples](#org19848e4)
-    2.  [Defining the solution](#orgc46ea60)
-    3.  [Exporting the problem](#orgf259c6d)
-        1.  [Defining a `Problem` variable](#org4ff72a7)
-        2.  [Usable interface](#org2218cb0)
-        3.  [Using other problems](#org3b35803)
-    4.  [The recursion case](#orgfd5a323)
-    5.  [Custom data structures](#org1d55d44)
-3.  [Implemented data structures](#org6fdb776)
-    1.  [Entiers](#org815cc24)
-    2.  [Listes](#orgfc84c83)
-    3.  [Trees](#orgbeec270)
-
-
-
-<a id="org5a3da6a"></a>
 
 # Overview
 
@@ -30,7 +10,7 @@ proposed a problem from a set of problems, and it has to solve it
 from the interface and some objects : the program then applies the
 function to its selected arguments and waits for another
 operation. When the correct object has been built, the user has to
-propose its solution. The program verifies whether it's correct. 
+propose its solution. The program verifies whether it's correct.
 
 By doing so, students may visualize step by step executions of
 algorithms on actual data. By trial and errors, they may understand
@@ -38,7 +18,8 @@ the order in which operations has to be performed. This program can
 also help students to write python programs by displaying at every
 step the syntactically correct python expression corresponding to
 their actions. It also accustom students to use `return` statements when
-they write function, because they have to "propose" (e.g. return) a solution to the program.
+they write function, because they have to "propose" (e.g. return) a
+solution to the program.
 
 The project has been inspired by [Insertion Sort Game](https://www.advanced-ict.info/interactive/insertion_sort.html), where the user
 has to sort an array using only two buttons `Left`, and `Stick`. The
@@ -46,18 +27,16 @@ problem `tri_insertion_iter` tries to mimic this behavior and show how
 the teacher can use its owns data structures to virtually implement
 any problem. The interface is inspired by the proof assistant program
 Coq, where is displayed the current set of hypothesis on which to
-operate at any given time. 
+operate at any given time.
 
 This program also helps to explain how to solve problems using
-recursion, as it is explained in [2.4](#orgfd5a323).
+recursion, as it is explained in [the recursion case](#org274b67e).
 
-
-<a id="orgcaad76e"></a>
 
 # Defining a problem
 
 Every problem is defined in the folder `./problèmes/` or one of their
-subfolder. The problem is automatically available  if any variable of
+subfolder. The problem is automatically available if any variable of
 class `Problème` is defined in the file. For instance, let's explain how
 to implement the problem of finding the minimum in a list `l`, using
 recursion :
@@ -69,13 +48,11 @@ recursion :
         -   if `m < head(l)`, then the minimum of the list is `m`
         -   else the minimum of `l` is `head(l)`.
 
-When then start the code defining the problem by : 
+When then start the code defining the problem by :
 
     from problem_solver import Problème
     from data_structures import Liste, Entier
 
-
-<a id="org19848e4"></a>
 
 ## Generating examples
 
@@ -93,11 +70,9 @@ According to current the `case` :
     element.
 
 
-<a id="orgc46ea60"></a>
-
 ## Defining the solution
 
-In order to verify students answer, one has to provide a way of
+In order to verify student's answers, one has to provide a way of
 computing the solution of the given problem for any entry. It can be
 done in various ways, either "manually" or using predefined python
 functions. For instance it's possible to simply return `min(l)`, when `l`
@@ -115,52 +90,130 @@ implementation using the interface of type `Liste` :
     	    return l.tete()
 
 
-<a id="orgf259c6d"></a>
-
 ## Exporting the problem
 
 
-<a id="org4ff72a7"></a>
-
 ### Defining a `Problem` variable
 
+The `Problem` class has various attributes :
 
-<a id="org2218cb0"></a>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Attribute</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td class="org-left"><code>name</code></td>
+<td class="org-left">A string describing the problem name</td>
+</tr>
+
+
+<tr>
+<td class="org-left"><code>type</code></td>
+<td class="org-left">A string describing the solution function signature</td>
+</tr>
+
+
+<tr>
+<td class="org-left"><code>doc</code></td>
+<td class="org-left">A string explaining the problem</td>
+</tr>
+
+
+<tr>
+<td class="org-left"><code>entrée_fun</code></td>
+<td class="org-left">A function to use in order to generate problem entries</td>
+</tr>
+
+
+<tr>
+<td class="org-left"><code>problem_mets</code></td>
+<td class="org-left">A list of strings. The user will be able to use corresponding method to solve the problem.</td>
+</tr>
+
+
+<tr>
+<td class="org-left"><code>problem_funs</code></td>
+<td class="org-left">A list of tuples, the first element being a function, the second being a string (the function name)</td>
+</tr>
+
+
+<tr>
+<td class="org-left"><code>solution_fun</code></td>
+<td class="org-left">A tuple, the first element being a function, the second being a string (the function name)</td>
+</tr>
+
+
+<tr>
+<td class="org-left"><code>rec_mode</code></td>
+<td class="org-left">Optional (function) : whether to allow recursion to solve the problem</td>
+</tr>
+</tbody>
+</table>
+
 
 ### Usable interface
 
+When solving the problem, the user is proposed :
 
-<a id="org3b35803"></a>
+-   the methods of `problem_mets`
+-   the functions of `problem_funs`
+-   the `solution_fun` if `rec_mode` is defined. `rec_mode` is a function
+    having the same arguments than the solution function. It outputs an
+    int representing the data "complexity". When this variable is set,
+    the user might use the solution function only if the data it is
+    applied to has a "complexity" strictly lower than the problem
+    current difficulty. 
+    
+    For instance, `rec_mode` might be set at `len` when solving the minimum
+    problem, but at `lambda l1, l2: len(l1) + len(l2)` when solving the
+    problem of fusion of two sorted list.
+
 
 ### Using other problems
 
+It is possible to use already defined functions. For example, if
+trying to implement the selection sort algorithm, one can first import
+the function `minimum` and make it usable by setting `problem_funs` to
+`[(minimum, "minimum")]`. Of course any number of functions might be
+added this way.
 
-<a id="orgfd5a323"></a>
-
-## The recursion case
-
-
-<a id="org1d55d44"></a>
 
 ## Custom data structures
 
+In addition to the already defined data structures, one can add its
+own data structures when creating new problems. An attribute `interface`
+has to be defined, linking to exposed methods. Exposed methods **has to
+return an object** (or a list of objects) : they will be added to the
+environment whereas the old object to which the method was added will
+be popped out from the environment. 
 
-<a id="org6fdb776"></a>
+`__eq__` and `__repr__` also has to be defined for verifing the solution and
+displaying objects. 
+
+For an example of the implementation of [Insertion Sort Game](https://www.advanced-ict.info/interactive/insertion_sort.html) with our
+program, see `tri_insertion_iter.py`.
+
 
 # Implemented data structures
 
 
-<a id="org815cc24"></a>
-
 ## Entiers
 
 
-<a id="orgfc84c83"></a>
-
 ## Listes
 
-
-<a id="orgbeec270"></a>
 
 ## TODO Trees
 
