@@ -17,8 +17,9 @@ def import_submodules(start_path, include_start_directory=True):
         spec.loader.exec_module(module)
 
 import_submodules("problèmes")
-print([e for e in ProblemIndex])
+# print([e for e in ProblemIndex])
 
-# p = Problème_Solver(5, ProblemIndex["supprime"])
-# p.joue()
+p = Problème_Solver(5, ProblemIndex["supprime"])
+p.joue()
+p.joue()
 
