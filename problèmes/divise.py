@@ -2,7 +2,7 @@ import random
 from problem_solver import Problème
 from data_structures import Liste, Entier
 
-problem_name = "divise"
+problem_name = "divise_en_2"
 problem_type = "liste -> (liste, liste)"
 problem_doc = "Étant donné une liste l, renvoie deux listes l1 et l2 construites avec les éléments de l et dont la longueur diffère au plus d'un."
 difficulté_type = "la longueur de la liste l"
@@ -35,4 +35,5 @@ if not __name__:
             entrée_fun = génère_entrée,
             problem_mets = ["divise", "ajoute"],
             problem_funs = [],
-            solution_fun = (divise_en_2, "divise_en_2"))
+             solution_fun = (divise_en_2, "divise_en_2"),
+             rec_mode=len)

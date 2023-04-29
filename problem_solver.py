@@ -66,10 +66,11 @@ class Problème_Solver:
 
 
     def info(self):
-        print(f""" PROBLÈME {self.problem.name} (difficulté {self.difficulté}) :
+        doc = f""" PROBLÈME {self.problem.name} (difficulté {self.difficulté}) :
         {self.problem.type}
-        {self.problem.doc}""")
-        return None
+        {self.problem.doc}"""
+        # print(doc)
+        return doc
 
 
     def vérifie_solution(self, sel):
@@ -77,20 +78,30 @@ class Problème_Solver:
         return all(sel[i] == self.sol[i] for i in range(len(sel)))
         
 
-    def propose_solution(self):
-        """ Sélectionne un objet et vérifie qu'il s'agit d'une
-        solution du problème. """
+    def propose_solution(self, data_names):
+        """ Vérifie que les objets de noms data_names sont 
+        des solutions du problème. """
+        self.monde.active_data = data_names
         sel = self.monde.sel_objects(len(self.sol))
-        sel_str = ", ".join([o.name for o in sel])
-
-        print(f"Réponse proposée : {sel}\nRéponse attendue : {self.sol}")
         if self.vérifie_solution(sel):
-            print("Bravo vous avez résolu le problème !")
-            print(f"Propose : {sel_str}")
-            self.solved = True
+            return "Bravo vous avez résolu le problème."
         else:
-            print("Ça n'est pas la bonne réponse, il faut continuer...")
-        return None
+            return "Ça n'est pas la bonne réponse, il faut continuer."
+
+
+
+
+        # sel = self.monde.
+        # sel_str = ", ".join([o.name for o in sel])
+
+        # print(f"Réponse proposée : {sel}\nRéponse attendue : {self.sol}")
+        # if self.vérifie_solution(sel):
+        #     print("Bravo vous avez résolu le problème !")
+        #     print(f"Propose : {sel_str}")
+        #     self.solved = True
+        # else:
+        #     print("Ça n'est pas la bonne réponse, il faut continuer...")
+        # return None
 
     def select_apply_operation(self, op, data_names):
         self.monde.active_data = data_names

@@ -26,7 +26,9 @@ class World:
 
     def sel_objects(self, n):
         assert len(self.active_data) == n, f"{self.active_data}, {n}"
-        return [self.objects[k] for k in self.active_data]
+        data = [self.objects[k] for k in self.active_data]
+        self.active_data = []
+        return data
         # return [self.objects[self.select_object_name()]
         #             for _ in range(n)]
 

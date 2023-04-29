@@ -30,7 +30,7 @@ if not __name__:
             type = problem_type,
             doc = problem_doc,
             entrée_fun = génère_entrée,
-            problem_mets = ["divise"],
+            problem_mets = ["ajoute"],
             problem_funs = [(supprime, "supprime"), (minimum, "minimum")],
-            solution_fun = (minimum, "minimum"),
+            solution_fun = (tri_sélection, "tri_sélection"),
             rec_mode = len)
