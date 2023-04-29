@@ -1,17 +1,7 @@
 # TODO
-- [ ] tester les problèmes 
-	- [ ] tri_fusion.py
-	- [ ] tri_insertion.py
-	- [ ] divise.y
-	- [ ] minimum.py
-	- [ ] fusionne.py 
-	- [ ] supprime.py 
-	- [ ] insere_triée.py 
-	- [ ] tri_selection.py 
-	- [ ] tri_insertion_iter.py
-
-- [ ] interface terminal
-- [ ] écrire la documentation et présenter le projet
+- [ ] nettoyer le code ? 
+- [ ] test automatique des problèmes 
+- [ ] documentation des fonctions de l'interface
 - Erreurs utilisateur :
     - [ ] ajouter une fonctionnalité d'annulation
     - [ ] rattraper les erreurs de type
@@ -36,3 +26,15 @@
 - [X] ajouter un mécanisme de calcul de la complexité de l'entrée (mode récursif)
 - [X] régler le décompte des commits sur github
 - [X] reprendre les anciens problèmes avec la nouvelle interface
+- [X] interface terminal
+- [X] écrire la documentation et présenter le projet
+- [X] tester les problèmes 
+	- [X] tri_fusion.py
+	- [X] tri_insertion.py
+	- [X] divise.y
+	- [X] minimum.py
+	- [X] fusionne.py 
+	- [X] supprime.py 
+	- [X] insere_triée.py 
+	- [X] tri_selection.py 
+	- [X] tri_insertion_iter.py
