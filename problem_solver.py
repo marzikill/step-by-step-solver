@@ -2,6 +2,10 @@ from world import World
 from dataclasses import dataclass
 from utils import encapsulate, listargs2str, count_args
 
+from importlib import util
+from os import path
+from glob import glob
+
 ProblemIndex = dict()
 @dataclass
 class Problème:
@@ -88,11 +92,13 @@ class Problème_Solver:
             print("Ça n'est pas la bonne réponse, il faut continuer...")
         return None
 
-    def select_apply_operation(self):
-        print(self)
-        op_name = self.monde.sel_function()
-        op = self.monde.functions[op_name]
+    def select_apply_operation(self, op, data_names):
+        self.monde.active_data = data_names
         op()
+        # print(self)
+        # op_name = self.monde.sel_function()
+        # op = self.monde.functions[op_name]
+        # op()
 
     def joue(self):
         self.generate_problem_data()
@@ -100,3 +106,18 @@ class Problème_Solver:
         while not self.solved:
             self.select_apply_operation()
         return self.solved
+
+
+# Récupérer tous les fichiers pythons présents dans ./problèmes
+# https://stackoverflow.com/questions/57878744/how-do-i-dynamically-import-all-py-files-from-a-given-directory-and-all-sub-di
+def import_submodules(start_path, include_start_directory=True):
+    start_path = path.abspath(start_path)
+    pattern = '**/*.py' if include_start_directory else '*/**/*.py'
+    py_files = [f for f in glob(path.join(start_path, pattern), recursive=True) if not f.endswith('__.py')]
+
+    for py_file in py_files:
+        spec = util.spec_from_file_location('', py_file)
+        module = util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+import_submodules("problèmes")

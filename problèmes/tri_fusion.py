@@ -20,7 +20,7 @@ def tri_fusion(l):
     if l.est_vide() or l.est_singleton():
         return l
     else:
-        l1, l2 = divise(l)
+        l1, l2 = divise_en_2(l)
         l1, l2 = tri_fusion(l1), tri_fusion(l2)
         return fusionne(l1, l2)
 

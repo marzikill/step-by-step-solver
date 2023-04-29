@@ -1,12 +1,10 @@
 from utils import select_from, encapsulate, count_args, build_object_name
 
-class Selector:
-    pass 
-
 class World:
     def __init__(self):
         self.objects = {}
         self.functions = {}
+        self.active_data = []
 
     def __repr__(self):
         return "".join([f"{name} : {object}\n"
@@ -15,9 +13,9 @@ class World:
     def affiche(self):
         print(f"\nObjets courants :\n{self}")
 
-    def select_object_name(self):
-        return select_from(self.objects,
-                           display= lambda n: f"{n} = {self.objects[n]}")
+    # def select_object_name(self):
+    #     return select_from(self.objects,
+    #                        display= lambda n: f"{n} = {self.objects[n]}")
 
     def add_object(self, object):
         # print(f"Ajout de {object} de type {type(object)}")
@@ -27,12 +25,14 @@ class World:
         return self.objects.pop[object_name]
 
     def sel_objects(self, n):
-        return [self.objects[self.select_object_name()]
-                    for _ in range(n)]
+        assert len(self.active_data) == n, f"{self.active_data}, {n}"
+        return [self.objects[k] for k in self.active_data]
+        # return [self.objects[self.select_object_name()]
+        #             for _ in range(n)]
 
-    def sel_function(self):
-        return select_from(self.functions,
-                              prompt = "Action à effectuer : ")
+    # def sel_function(self):
+    #     return select_from(self.functions,
+    #                           prompt = "Action à effectuer : ")
 
     def add_function(self, fun_info):
         fun, fun_name = fun_info
@@ -58,7 +58,8 @@ class World:
 
     def add_method(self, fun_name):
         def method_with_selection():
-            object_name = self.select_object_name()
+            # object_name = self.select_object_name()
+            object_name = self.active_data.pop(0)
             fun = self.objects.pop(object_name).interface[fun_name]
             num_args = count_args(fun)
             data = self.sel_objects(num_args)
