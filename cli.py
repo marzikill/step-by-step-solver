@@ -37,6 +37,7 @@ class ProblèmeSolverView:
         self.selected_pb = None
         self.selected_fun = None
         self.selected_data = []
+        self.auto_sel_mode = False
 
     def update_view(self):
         self.pb_index_chooser.original_widget = urwid.Padding(menu(u' Liste des problèmes ',
@@ -44,13 +45,13 @@ class ProblèmeSolverView:
                                                                    self.load_problem,
                                                                    hl=[self.selected_pb]))
         self.pb_objects_chooser.original_widget = urwid.Padding(menu(u' Données du problème ',
-                                                                     [f"{name} : {object}" for name, object in self.pb.monde.objects.items()],
+                                                                     self.pb.monde.object_names(),
                                                                      self.sel_data,
                                                                      hl=self.selected_data))
 
         self.pb_solution_display.original_widget.original_widget.body[-1] = urwid.Text("\n".join(map(str, self.pb.sol)))
         self.pb_interface_chooser.original_widget = urwid.Padding(menu(u' Interface du problème ',
-                                                                       [fun_name for fun_name in self.pb.monde.functions],
+                                                                       self.pb.monde.fun_names(),
                                                                        self.sel_fun,
                                                                        hl=[self.selected_fun]))
         
@@ -69,6 +70,10 @@ class ProblèmeSolverView:
             self.popup(res)
             return
         self.selected_fun = choice
+        if self.auto_sel_mode:
+            self.selected_data = self.pb.monde.object_names()
+            self.send_data()
+            return
         self.update_view()
         self.top.focus_position = 1
         self.pb_sandbox.focus_position = 0
@@ -122,6 +127,8 @@ class ProblèmeSolverView:
             self.send_data()
         if key in ('h', 'H'):
             self.help()
+        if key in ('a', 'A'):
+            self.auto_sel_mode = not self.auto_sel_mode
 
 
 cli = ProblèmeSolverView()

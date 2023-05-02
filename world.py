@@ -6,9 +6,14 @@ class World:
         self.functions = {}
         self.active_data = []
 
+    def object_names(self):
+        return [f"{name} : {object}" for name, object in self.objects.items()]
+
+    def fun_names(self):
+        return [fun_name for fun_name in self.functions]
+
     def __repr__(self):
-        return "".join([f"{name} : {object}\n"
-                        for name, object in self.objects.items()])
+        return "\n".join(self.object_names())
             
     def affiche(self):
         print(f"\nObjets courants :\n{self}")
