@@ -48,11 +48,22 @@ class Problème_Solver:
         for fun_info in solver_funs:
             self.monde.add_function(fun_info)
 
+    def problems(self):
+        return 
+
+    def objects(self):
+        return [(o_name, '')
+                for o_name in self.monde.object_names()]
+
+    def functions(self):
+        return [(f_name, self.monde.docs[f_name])
+                for f_name in self.monde.fun_names()]
 
     def __str__(self):
         info = "\n".join([self.monde.docs[fname]
                           for fname in self.monde.fun_names()])
         return info
+
 
 
     def generate_problem_data(self):

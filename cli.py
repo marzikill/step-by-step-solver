@@ -7,19 +7,40 @@ palette = [
     ('reversed', 'standout', '')
 ]
 
-def menu(title, choices, fun, hl = None):
+def menu(title, choices, fun, view, hl = None):
     if not hl:
         hl = []
     # body = [urwid.Text(title), urwid.Divider()]
     body = [urwid.Divider()]
-    for c in choices:
-        button = urwid.Button(c)
-        urwid.connect_signal(button, 'click', fun, c)
+    for c, d in choices:
+        # button = urwid.Button(c)
+        # urwid.connect_signal(button, 'click', fun, c)
+        button = HelpButton(c, d, fun, c, view)
         if c in hl:
             body.append(urwid.AttrMap(button, 'selected'))
         else:
             body.append(urwid.AttrMap(button, None, focus_map='reversed'))
     return urwid.LineBox(urwid.ListBox(urwid.SimpleFocusListWalker(body)), title=title)
+
+
+class HelpButton(urwid.Button):
+    def __init__(self, label, doc = '', on_press=None, user_data=None, view=None):
+        super().__init__(label, on_press=on_press, user_data=user_data)
+        self.doc = doc
+        self.view = view
+        self._command_map['h'] = 'activate'
+
+        # https://stackoverflow.com/questions/52252730/how-do-you-make-buttons-of-the-python-library-urwid-look-pretty
+        # here is a lil hack: use a hidden button for evt handling
+        self._hidden_btn = urwid.Button(label, on_press, user_data)
+
+
+    def keypress(self, size, key):
+        if key == 'h':
+            self.view.popup(self.doc)
+            # raise ValueError(self.doc)
+        else:
+            return self._hidden_btn.keypress(size, key)
 
 class ProblèmeSolverView:
     def __init__(self):
@@ -31,9 +52,13 @@ class ProblèmeSolverView:
         self.auto_sel_mode = False
 
     def init_view(self):
-        self.pb_index_chooser = urwid.Padding(menu(u' Liste des problèmes ', ProblemIndex, self.load_problem), left=2, right=2)
-        self.pb_objects_chooser = urwid.Padding(menu(u' Données du problème ', [], None), left=2, right=2)
-        self.pb_interface_chooser = urwid.Padding(menu(u' Interface du problème ', [], None), left=2, right=2)
+        self.pb_index_chooser = urwid.Padding(menu(u' Liste des problèmes ',
+                                                   [(pb_name, ProblemIndex[pb_name].doc)
+                                                                    for pb_name in ProblemIndex],
+                                                   self.load_problem,
+                                                   view=self))
+        self.pb_objects_chooser = urwid.Padding(menu(u' Données du problème ', [], None, None), left=2, right=2)
+        self.pb_interface_chooser = urwid.Padding(menu(u' Interface du problème ', [], None, None), left=2, right=2)
 
         body = [urwid.Divider(), urwid.Text(" ")]
         self.pb_solution_display = urwid.Padding(urwid.LineBox(urwid.ListBox(body), title='Solution du problème'), left=2, right=2)
@@ -42,19 +67,23 @@ class ProblèmeSolverView:
 
     def update_view(self):
         self.pb_index_chooser.original_widget = urwid.Padding(menu(u' Liste des problèmes ',
-                                                                   ProblemIndex,
+                                                                   [(pb_name, ProblemIndex[pb_name].doc)
+                                                                    for pb_name in ProblemIndex],
                                                                    self.load_problem,
-                                                                   hl=[self.selected_pb]))
+                                                                   hl=[self.selected_pb],
+                                                                   view=self))
         self.pb_objects_chooser.original_widget = urwid.Padding(menu(u' Données du problème ',
-                                                                     self.pb.monde.object_names(),
+                                                                     self.pb.objects(),
                                                                      self.sel_data,
-                                                                     hl=self.selected_data))
+                                                                     hl=self.selected_data,
+                                                                     view=self))
 
         self.pb_solution_display.original_widget.original_widget.body[-1] = urwid.Text("\n".join(map(str, self.pb.sol)))
         self.pb_interface_chooser.original_widget = urwid.Padding(menu(u' Interface du problème ',
-                                                                       self.pb.monde.fun_names(),
+                                                                       self.pb.functions(),
                                                                        self.sel_fun,
-                                                                       hl=[self.selected_fun]))
+                                                                       hl=[self.selected_fun],
+                                                                       view=self))
         
 
     def load_problem(self, button, choice):
@@ -128,12 +157,12 @@ class ProblèmeSolverView:
             raise urwid.ExitMainLoop()
         if key in ('s', 'S'):
             self.send_data()
-        if key in ('h', 'H'):
-            self.help()
+        if key in ('H'):
+            self.popup(self.pb.__str__())
         if key in ('a', 'A'):
             self.auto_sel_mode = not self.auto_sel_mode
         if key in ('p', 'P'):
-            self.popup(self.pb.__str__())
+            self.help()
 
 
 cli = ProblèmeSolverView()
