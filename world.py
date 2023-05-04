@@ -15,12 +15,6 @@ class World:
     def fun_names(self):
         return [fun_name for fun_name in self.functions]
 
-    # def __repr__(self):
-    #     return "\n".join(self.object_names())
-            
-    # def affiche(self):
-    #     print(f"\nObjets courants :\n{self}")
-
     def add_object(self, object):
         self.objects[object.name] = object
 
@@ -68,7 +62,10 @@ class World:
         def method_with_selection():
             # object_name = self.select_object_name()
             object_name = self.active_data.pop(0)
-            fun = self.objects.pop(object_name).interface[meth_name]
+            try:
+                fun = self.objects.pop(object_name).interface[meth_name]
+            except AttributeError:
+                raise AttributeError(f"{meth_name} ne s'applique pas à {object_name}")
             num_args = count_args(fun)
             data = self.get_check_sel_objects(meth_name, num_args)
             return self.apply_add(fun, data)

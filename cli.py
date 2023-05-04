@@ -8,6 +8,12 @@ palette = [
 ]
 
 def menu(title, choices, fun, view, hl = None):
+    """ Menu constitué de boutons aidants :
+    - title : str (nom affiché du menu)
+    - choices : [(labels, docs)]
+    - fun : la fonction déclenchée sur on_press 
+    - view : là où s'affiche le popup
+    - hl : les éléments du menu à surligner """
     if not hl:
         hl = []
     # body = [urwid.Text(title), urwid.Divider()]
@@ -24,6 +30,9 @@ def menu(title, choices, fun, view, hl = None):
 
 
 class HelpButton(urwid.Button):
+    """ Un bouton aidant : 
+    - activé avec entrée (ou un clic) active on_press
+    - activé avec h déclenche une popup affichant doc """
     def __init__(self, label, doc = '', on_press=None, user_data=None, view=None):
         super().__init__(label, on_press=on_press, user_data=user_data)
         self.doc = doc
@@ -42,20 +51,13 @@ class HelpButton(urwid.Button):
         else:
             return self._hidden_btn.keypress(size, key)
 
-class ProblèmeSolverView:
-    def __init__(self):
-        self.init_view()
-        self.pb = None
-        self.selected_pb = None
-        self.selected_fun = None
-        self.selected_data = []
-        self.auto_sel_mode = False
-
-    def init_view(self):
+class ProblemSolverView:
+    def __init__(self, c):
+        self.controller = c
         self.pb_index_chooser = urwid.Padding(menu(u' Liste des problèmes ',
                                                    [(pb_name, ProblemIndex[pb_name].doc)
                                                                     for pb_name in ProblemIndex],
-                                                   self.load_problem,
+                                                   self.controller.load_problem,
                                                    view=self))
         self.pb_objects_chooser = urwid.Padding(menu(u' Données du problème ', [], None, None), left=2, right=2)
         self.pb_interface_chooser = urwid.Padding(menu(u' Interface du problème ', [], None, None), left=2, right=2)
@@ -65,69 +67,29 @@ class ProblèmeSolverView:
         self.pb_sandbox = urwid.Pile([self.pb_objects_chooser, self.pb_solution_display, self.pb_interface_chooser])
         self.top = urwid.Columns([(30, self.pb_index_chooser), self.pb_sandbox])
 
-    def update_view(self):
+    def update(self):
         self.pb_index_chooser.original_widget = urwid.Padding(menu(u' Liste des problèmes ',
                                                                    [(pb_name, ProblemIndex[pb_name].doc)
                                                                     for pb_name in ProblemIndex],
-                                                                   self.load_problem,
-                                                                   hl=[self.selected_pb],
+                                                                   self.controller.load_problem,
+                                                                   hl=[self.controller.selected_pb],
                                                                    view=self))
         self.pb_objects_chooser.original_widget = urwid.Padding(menu(u' Données du problème ',
-                                                                     self.pb.objects(),
-                                                                     self.sel_data,
-                                                                     hl=self.selected_data,
+                                                                     self.controller.pb.objects(),
+                                                                     self.controller.sel_data,
+                                                                     hl=self.controller.selected_data,
                                                                      view=self))
 
-        self.pb_solution_display.original_widget.original_widget.body[-1] = urwid.Text("\n".join(map(str, self.pb.sol)))
+        self.pb_solution_display.original_widget.original_widget.body[-1] = urwid.Text("\n".join(map(str, self.controller.pb.sol)))
         self.pb_interface_chooser.original_widget = urwid.Padding(menu(u' Interface du problème ',
-                                                                       self.pb.functions(),
-                                                                       self.sel_fun,
-                                                                       hl=[self.selected_fun],
+                                                                       self.controller.pb.functions(),
+                                                                       self.controller.sel_fun,
+                                                                       hl=[self.controller.selected_fun],
                                                                        view=self))
-        
 
-    def load_problem(self, button, choice):
-        self.selected_pb = choice
-        self.pb = Problème_Solver(5, ProblemIndex[choice])
-        self.update_view()
-        self.top.focus_position = 1
-        self.pb_sandbox.focus_position = 1
-
-    def sel_fun(self, button, choice):
-        if choice == 'info':
-            res = self.pb.info()
-            self.popup(res)
-            return
-        self.selected_fun = choice
-        if self.auto_sel_mode:
-            self.selected_data = self.pb.monde.object_names()
-            self.send_data()
-            return
-        self.update_view()
-        self.top.focus_position = 1
-        self.pb_sandbox.focus_position = 0
-
-    def sel_data(self, button, choice):
-        """ Toggle la sélection de la donnée """
-        if not choice in self.selected_data:
-            self.selected_data.append(choice)
-        else:
-            self.selected_data.remove(choice)
-        self.update_view()
-
-    def send_data(self):
-        data_names = [c.split(' : ')[0] for c in self.selected_data]
-        if self.selected_fun == 'propose':
-            res = self.pb.propose_solution(data_names)
-            self.popup(res)
-        else:
-            fun_name = self.selected_fun
-            self.pb.select_apply_operation(fun_name, data_names)
-        self.selected_data = []
-        self.selected_fun = None
-        self.update_view()
-        self.top.focus_position = 1
-        self.pb_sandbox.focus_position = 1
+    def focus(self, left_col, right_col):
+        self.top.focus_position = left_col
+        self.pb_sandbox.focus_position = right_col
 
     def popup(self, text):
         txt = urwid.Text(text)
@@ -139,7 +101,7 @@ class ProblèmeSolverView:
         self.loop.widget = urwid.Overlay(popup, self.loop.widget,
                                          align='center',
                                          valign='middle',
-                                         width=60, height=30)
+                                         width=60, height=10)
         def f(b): self.loop.widget = self.loop.widget.bottom_w
         urwid.connect_signal(exit_button, 'click', f)
 
@@ -156,7 +118,7 @@ class ProblèmeSolverView:
         if key in ('q', 'Q'):
             raise urwid.ExitMainLoop()
         if key in ('s', 'S'):
-            self.send_data()
+            self.controller.send_data()
         if key in ('H'):
             self.popup(self.pb.__str__())
         if key in ('a', 'A'):
@@ -165,5 +127,65 @@ class ProblèmeSolverView:
             self.help()
 
 
-cli = ProblèmeSolverView()
+class ProblemSolverController:
+    def __init__(self):
+        self.view = ProblemSolverView(self)
+        self.pb = None
+        self.selected_pb = None
+        self.selected_fun = None
+        self.selected_data = []
+        self.auto_sel_mode = False
+
+    def load_problem(self, button, choice):
+        """ Charge le problème sélectionné """
+        self.selected_pb = choice
+        self.pb = Problème_Solver(5, ProblemIndex[choice])
+        self.view.update()
+        self.view.focus(1, 1)
+
+    def sel_fun(self, button, choice):
+        """ Sélectionne la fonction choice """
+        if choice == 'info':
+            res = self.pb.info()
+            self.popup(res)
+            return
+        self.selected_fun = choice
+        if self.auto_sel_mode:
+            self.selected_data = self.pb.monde.object_names()
+            self.send_data()
+            return
+        self.view.update()
+        self.view.focus(1, 0)
+
+    def sel_data(self, button, choice):
+        """ Toggle la sélection de la donnée """
+        if not choice in self.selected_data:
+            self.selected_data.append(choice)
+        else:
+            self.selected_data.remove(choice)
+        self.view.update()
+
+    def send_data(self):
+        """ Applique la sélection de l'utilisateur """
+        data_names = [c.split(' : ')[0] for c in self.selected_data]
+        if self.selected_fun == 'propose':
+            res = self.pb.propose_solution(data_names)
+            self.view.popup(res)
+        else:
+            fun_name = self.selected_fun
+            try:
+                self.pb.select_apply_operation(fun_name, data_names)
+            except (ValueError, TypeError, RecursionError, AttributeError) as e:
+                self.view.popup(e.__str__())
+                return
+        self.selected_data = []
+        self.selected_fun = None
+        self.view.update()
+        self.view.focus(1, 1)
+
+    def run(self):
+        self.view.run()
+
+
+cli = ProblemSolverController()
 cli.run()
