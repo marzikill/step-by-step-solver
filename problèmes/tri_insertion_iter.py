@@ -23,6 +23,7 @@ class Tableau:
 
 
     def échange_gauche(self):
+        """ Échange l'élément actif du tableau avec celui d'avant """
         i = self.indice_courant
         if i >= 1 and self.content[i - 1] > self.content[i]:
             self.content[i], self.content[i - 1] = self.content[i - 1], self.content[i]
@@ -34,6 +35,7 @@ class Tableau:
 
 
     def dépose(self):
+        """ Change l'élément actif """
         self.indice_insérer += 1
         self.indice_courant = self.indice_insérer
         return self

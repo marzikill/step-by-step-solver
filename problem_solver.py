@@ -1,6 +1,6 @@
 from world import World
 from dataclasses import dataclass
-from utils import encapsulate, listargs2str, count_args
+from utils import encapsulate
 
 from importlib import util
 from os import path
@@ -30,6 +30,7 @@ class Problème_Solver:
         self.difficulté = n
         self.solved = False
         self.monde = World()
+        self.generate_problem_data()
 
         # Ajout des fonctions et méthodes du problème
         for fun_info in problem.problem_funs:
@@ -49,9 +50,9 @@ class Problème_Solver:
 
 
     def __str__(self):
-        monde = f"\nObjets courants\n{self.monde}" 
-        sol = f"Solution du problème\n{listargs2str(self.sol)}\n"
-        return monde + sol
+        info = "\n".join([self.monde.docs[fname]
+                          for fname in self.monde.fun_names()])
+        return info
 
 
     def generate_problem_data(self):
@@ -66,57 +67,32 @@ class Problème_Solver:
 
 
     def info(self):
+        """ Énoncé du problème """
         doc = f""" PROBLÈME {self.problem.name} (difficulté {self.difficulté}) :
         {self.problem.type}
         {self.problem.doc}"""
         # print(doc)
         return doc
 
-
-    def vérifie_solution(self, sel):
-        # print(f"Vérifie : {self.sol} == {sel}")
-        return all(sel[i] == self.sol[i] for i in range(len(sel)))
+    def vérifie_solution(self, data):
+        if not isinstance(data, list):
+            return data == self.sol
+        return all(data[i] == self.sol[i] for i in range(len(self.sol)))
         
 
     def propose_solution(self, data_names):
-        """ Vérifie que les objets de noms data_names sont 
-        des solutions du problème. """
-        self.monde.active_data = data_names
-        sel = self.monde.sel_objects(len(self.sol))
-        if self.vérifie_solution(sel):
+        """ Vérifie que les objets sélectionnés sont solution. """
+        data = [self.monde.objects[k] for k in data_names]
+        if self.vérifie_solution(data):
             return "Bravo vous avez résolu le problème."
         else:
             return "Ça n'est pas la bonne réponse, il faut continuer."
 
 
-
-
-        # sel = self.monde.
-        # sel_str = ", ".join([o.name for o in sel])
-
-        # print(f"Réponse proposée : {sel}\nRéponse attendue : {self.sol}")
-        # if self.vérifie_solution(sel):
-        #     print("Bravo vous avez résolu le problème !")
-        #     print(f"Propose : {sel_str}")
-        #     self.solved = True
-        # else:
-        #     print("Ça n'est pas la bonne réponse, il faut continuer...")
-        # return None
-
-    def select_apply_operation(self, op, data_names):
+    def select_apply_operation(self, op_name, data_names):
+        op = self.monde.functions[op_name]
         self.monde.active_data = data_names
         op()
-        # print(self)
-        # op_name = self.monde.sel_function()
-        # op = self.monde.functions[op_name]
-        # op()
-
-    def joue(self):
-        self.generate_problem_data()
-        self.solved = False
-        while not self.solved:
-            self.select_apply_operation()
-        return self.solved
 
 
 # Récupérer tous les fichiers pythons présents dans ./problèmes

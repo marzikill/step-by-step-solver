@@ -25,7 +25,8 @@ def génère_entrée(difficulté, case = [0]):
     return Liste(res, name = "l")
 
 def minimum(l):
-    """ Liste -> Liste """
+    """ Liste -> Liste 
+    Étant donné une liste l non vide, renvoyer le plus petit élément de l """
     # Les Listes héritent de ce qu'il faut :
     m = min(l)
     return m

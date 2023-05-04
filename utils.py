@@ -14,7 +14,20 @@ def select_from(iterable, prompt = "Sélection : ", display = None, autosel = Tr
 def listargs2str(list_args):
     return ", ".join([str(e) for e in list_args])
 
-def build_object_name(fun_name, args_names, n, i):
+def sig(fun_doc):
+    if not fun_doc or fun_doc.find('->') < 0:
+        return []
+    sig = fun_doc.split('->')[0]
+    return [T.strip() for T in sig.split(',')]
+
+def find_method_doc(objects, fun_name):
+    for o in objects:
+        if type(o).__dict__.get(fun_name):
+            return type(o).__dict__.get(fun_name).__doc__
+    return ""
+    
+
+def new_object_name(fun_name, args_names, n, i):
     if n == 1:
         return f"{fun_name}({listargs2str(args_names)})"
     return f"{fun_name}({listargs2str(args_names)})[{i}]"
