@@ -1,4 +1,8 @@
 # TODO
+- [ ] implémenter un objet fonction : gestion des signatures etc
+- [ ] revoir la documentation des méthodes : le premier argument doit
+      être le type auquel la méthode s'applique (pour le moment
+      incompatible avec le code)
 - [ ] nettoyer le code ? 
 - [ ] test automatique des problèmes 
 - [ ] documentation des fonctions de l'interface

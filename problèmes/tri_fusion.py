@@ -5,7 +5,7 @@ from problèmes.divise import divise_en_2
 from problèmes.fusionne import fusionne
 
 problem_name = "tri_fusion"
-problem_type = "liste -> liste"
+problem_type = "Liste -> Liste"
 problem_doc = "Trie la liste l à l'aide de l'algorithme du tri fusion"
 difficulté_type = "la longueur de la liste l"
 

@@ -1,6 +1,9 @@
 import re
 from utils import encapsulate, count_args, new_object_name, sig, find_method_doc
 
+class OutException(Exception):
+    pass
+
 class World:
     def __init__(self):
         self.objects = {}
@@ -21,7 +24,7 @@ class World:
     def del_object(self, object_name):
         return self.objects.pop[object_name]
 
-    def get_check_sel_objects(self, fun_name, n):
+    def get_check_sel_objects(self, fun_name, n, drop_self=False):
         """ Renvoie les objets actifs en vérifiant que ceux-ci sont compatibles
         en tant qu'arguments pour la fonction """
         if not len(self.active_data) == n:
@@ -29,13 +32,16 @@ class World:
         data = [self.objects[k] for k in self.active_data]
         if not all([o.__class__.__name__ == T
                     for o, T in zip(data, self.functions_sig[fun_name])]):
-            raise TypeError(f"Les arguments sélectionnés n'ont pas le bon type")
+            raise TypeError(f"Les arguments sélectionnés n'ont pas le bon type",
+                            self.functions_sig[fun_name],
+                            [(o.__class__.__name__, T)
+                             for o, T in zip(data, self.functions_sig[fun_name])])
         self.active_data = []
         return data
 
-    def add_function(self, fun_info):
+    def add_function(self, fun_info, num_args=None):
         fun, fun_name = fun_info
-        num_args = count_args(fun)
+        num_args = count_args(fun) if not num_args else num_args
         def fun_with_selection():
             data = self.get_check_sel_objects(fun_name, num_args)
             return self.apply_add(fun, data, fun_name = fun_name)
@@ -60,23 +66,24 @@ class World:
     def add_method(self, meth_name):
         """ Les méthodes 'consomment' les objets auxquelles elles s'appliquent. """
         def method_with_selection():
-            # object_name = self.select_object_name()
             object_name = self.active_data.pop(0)
             try:
-                fun = self.objects.pop(object_name).interface[meth_name]
+                fun = self.objects[object_name].interface[meth_name]
             except AttributeError:
                 raise AttributeError(f"{meth_name} ne s'applique pas à {object_name}")
             num_args = count_args(fun)
-            data = self.get_check_sel_objects(meth_name, num_args)
+            data = self.get_check_sel_objects(meth_name, num_args, drop_self=True)
+            # On supprime l'objet une fois que tout est vérifié
+            self.objects.pop(object_name)
             return self.apply_add(fun, data)
         doc = find_method_doc(self.objects.values(), meth_name)
-        self.register_fun(method_with_selection, meth_name, doc)
+        self.register_fun(method_with_selection, meth_name, doc, drop_self=True)
 
-    def register_fun(self, fun, fun_name, fun_doc):
+    def register_fun(self, fun, fun_name, fun_doc, drop_self=False):
         if not fun_doc:
             fun_doc = 'Documentation manquante'
         self.functions[fun_name] = fun
-        self.functions_sig[fun_name] = sig(fun_doc)
+        self.functions_sig[fun_name] = sig(fun_doc) if not drop_self else sig(fun_doc)[1:]
         fun_doc = re.sub('\n\s+', '\n ', fun_doc)
         self.docs[fun_name] = f"{fun_name} :\n{fun_doc}"
 

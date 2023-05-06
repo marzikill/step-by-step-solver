@@ -6,6 +6,7 @@ from importlib import util
 from os import path
 from glob import glob
 
+
 ProblemIndex = dict()
 @dataclass
 class Problème:
@@ -24,11 +25,13 @@ class Problème:
             return 
         ProblemIndex[self.name] = self
              
+class InputOutputException(Exception):
+    pass
+
 class Problème_Solver:
     def __init__(self, n, problem):
         self.problem = problem
         self.difficulté = n
-        self.solved = False
         self.monde = World()
         self.generate_problem_data()
 
@@ -43,13 +46,22 @@ class Problème_Solver:
             self.monde.add_solfunction(problem.solution_fun,
                                        problem.rec_mode,
                                        self.difficulté)
-        solver_funs = [(self.propose_solution, "propose"),
-                       (self.info, "info")]
-        for fun_info in solver_funs:
-            self.monde.add_function(fun_info)
 
-    def problems(self):
-        return 
+        self.monde.add_function((self.propose_solution(), "propose"),
+                                num_args=len(self.signature['out']))
+        self.monde.add_function((self.info, "info"), num_args=0)
+
+    @property
+    def signature(self):
+        doc = self.problem.solution_fun[0].__doc__
+        if not doc.find('->'):
+            return 
+        sig = doc.split('->')
+        left_args = sig[0].split(',')
+        sig = sig[1].split('\n')
+        right_args = sig[0].split(',')
+        return {'in':left_args,
+                'out':right_args}
 
     def objects(self):
         return [(o_name, '')
@@ -63,8 +75,6 @@ class Problème_Solver:
         info = "\n".join([self.monde.docs[fname]
                           for fname in self.monde.fun_names()])
         return info
-
-
 
     def generate_problem_data(self):
         in_fun = encapsulate(self.problem.entrée_fun)
@@ -80,24 +90,27 @@ class Problème_Solver:
     def info(self):
         """ Énoncé du problème """
         doc = f""" PROBLÈME {self.problem.name} (difficulté {self.difficulté}) :
-        {self.problem.type}
+        {", ".join(self.signature['in'])} -> {", ".join(self.signature['out'])}
         {self.problem.doc}"""
-        # print(doc)
         return doc
 
-    def vérifie_solution(self, data):
-        if not isinstance(data, list):
-            return data == self.sol
+    def vérifie_solution(self, *data):
         return all(data[i] == self.sol[i] for i in range(len(self.sol)))
-        
 
-    def propose_solution(self, data_names):
+    def propose_solution(self):
         """ Vérifie que les objets sélectionnés sont solution. """
-        data = [self.monde.objects[k] for k in data_names]
-        if self.vérifie_solution(data):
-            return "Bravo vous avez résolu le problème."
-        else:
-            return "Ça n'est pas la bonne réponse, il faut continuer."
+        def propose(*args):
+            if self.vérifie_solution(*args):
+                raise InputOutputException("Bravo vous avez résolu le problème.")
+            else:
+                raise InputOutputException("Ça n'est pas la bonne réponse, il faut continuer.")
+        # Les fonctions ont une documentation du type :
+        # Type1, Type2, Type3 -> Type1', Type2'
+        # Description de la fonction.
+        sig = self.problem.solution_fun[0].__doc__.split('->')[1]
+        sig = sig.split('\n')[0]
+        propose.__doc__ = f"{sig} -> I/O"
+        return propose
 
 
     def select_apply_operation(self, op_name, data_names):

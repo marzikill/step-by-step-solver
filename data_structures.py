@@ -20,6 +20,7 @@ class Entier:
 
 
 class Liste:
+    """ Une liste d'Entiers. """
     def __init__(self, content, name = ""):
         self.name = name
         self.content = content
@@ -42,28 +43,36 @@ class Liste:
 
     # Interface d'une liste
     def est_vide(self):
+        """ Liste -> bool
+        Détermine si la liste est vide. """
         return self.content == []
 
     def est_singleton(self):
+        """ Liste -> bool 
+        Détermine si la liste ne contient qu'un élément. """
         return len(self.content) == 1
 
     def tete(self):
+        """ Liste -> Entier 
+        Renvoie le premier élément de la liste. """
         return Entier(self.content[0].n,
                       name = f"tete({self.name})")
 
     def queue(self):
+        """ Liste -> Liste
+        Renvoie la queue de la liste. """
         return Liste(self.content[1:],
                      name = f"queue({self.name})")
 
     def ajoute(self, e):
-        """ liste, int -> liste
+        """ Liste, Entier -> Liste
         Étant donné une liste l et un élément e, ajoute l'élément e en tête de la liste l """
         # assert isinstance(e, Entier)
         return Liste([e] + self.content,
                      f"ajoute({self.name}, {e.name})")
 
     def divise(self):
-        """ liste -> int, liste
+        """ Liste -> Entier, Liste
         Étant donné une liste l non vide, la découpe en deux morceaux tete(l) et queue(l)
         Exemples :
         l = [3] -> tete(l) = 3, queue(l) = [] 

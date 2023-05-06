@@ -14,10 +14,10 @@ def select_from(iterable, prompt = "Sélection : ", display = None, autosel = Tr
 def listargs2str(list_args):
     return ", ".join([str(e) for e in list_args])
 
-def sig(fun_doc):
+def sig(fun_doc, out = 0):
     if not fun_doc or fun_doc.find('->') < 0:
         return []
-    sig = fun_doc.split('->')[0]
+    sig = fun_doc.split('->')[out]
     return [T.strip() for T in sig.split(',')]
 
 def find_method_doc(objects, fun_name):

@@ -1,11 +1,12 @@
 import urwid
 from collections import OrderedDict
-from problem_solver import ProblemIndex, Problème_Solver
+from problem_solver import ProblemIndex, Problème_Solver, InputOutputException
 
 palette = [
     ('selected', 'black', 'light gray'),
     ('reversed', 'standout', '')
 ]
+
 
 def menu(title, choices, fun, view, hl = None):
     """ Menu constitué de boutons aidants :
@@ -120,7 +121,7 @@ class ProblemSolverView:
         if key in ('s', 'S'):
             self.controller.send_data()
         if key in ('H'):
-            self.popup(self.pb.__str__())
+            self.popup(self.controller.pb.__str__())
         if key in ('a', 'A'):
             self.auto_sel_mode = not self.auto_sel_mode
         if key in ('p', 'P'):
@@ -139,6 +140,8 @@ class ProblemSolverController:
     def load_problem(self, button, choice):
         """ Charge le problème sélectionné """
         self.selected_pb = choice
+        self.selected_fun = None
+        self.selected_data = []
         self.pb = Problème_Solver(5, ProblemIndex[choice])
         self.view.update()
         self.view.focus(1, 1)
@@ -147,7 +150,7 @@ class ProblemSolverController:
         """ Sélectionne la fonction choice """
         if choice == 'info':
             res = self.pb.info()
-            self.popup(res)
+            self.view.popup(res)
             return
         self.selected_fun = choice
         if self.auto_sel_mode:
@@ -168,17 +171,13 @@ class ProblemSolverController:
     def send_data(self):
         """ Applique la sélection de l'utilisateur """
         data_names = [c.split(' : ')[0] for c in self.selected_data]
-        if self.selected_fun == 'propose':
-            res = self.pb.propose_solution(data_names)
-            self.view.popup(res)
-        else:
-            fun_name = self.selected_fun
-            try:
-                self.pb.select_apply_operation(fun_name, data_names)
-            except (ValueError, TypeError, RecursionError, AttributeError) as e:
-                self.view.popup(e.__str__())
-                return
+        fun_name = self.selected_fun
         self.selected_data = []
+        try:
+            self.pb.select_apply_operation(fun_name, data_names)
+        except (ValueError, TypeError, RecursionError, AttributeError, InputOutputException) as e:
+            self.view.popup(e.__str__())
+            return
         self.selected_fun = None
         self.view.update()
         self.view.focus(1, 1)

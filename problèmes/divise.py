@@ -16,7 +16,7 @@ def génère_entrée(difficulté):
     return Liste(res, name = "l")
 
 def divise_en_2(l):
-    """ Liste -> (Liste, Liste) """
+    """ Liste -> Liste, Liste """
     # Les Listes héritent de ce qu'il faut :
     if l.est_vide():
         return l, l
