@@ -1,16 +1,21 @@
 # TODO
+- [ ] BUG divise si rien n'est sélectionné : pop from empty list
+- [ ] popup input utilisateur
+- [ ] nettoyer le code :
+  Problèmes de design :
+  généraliser ce qui a été fait pour le problème minimum (cf commentaires)
+  - que pense-t-on de "ne pas faire la distinction entre fonction/méthode -> ne manipuler que des fonctions" ?
+  - que pense-t-on de "les méthodes mutent l'objet sur lequel elles s'appliquent ?"
+	- certaines méthodes mutent les objets (genre ajoute)
+	- d'autre non (genre divise)
+	- la plupart du temps les fonctions manipulées ne mutent pas les objets
+  -> tout est fonction mais certaines fonctions mutent les objets auxquelles elles s'appliquent, d'autres non. Utiliser le mécanisme `id` de python comme identificateur dans le World ?
+  - que pense-t-on de "input est une méthode du type" vs "étant donné un type, le pb construit une fonction d'input" ?
 - [ ] implémenter un objet fonction : gestion des signatures etc
-- [ ] revoir la documentation des méthodes : le premier argument doit
-      être le type auquel la méthode s'applique (pour le moment
-      incompatible avec le code)
-- [ ] nettoyer le code ? 
-- [ ] test automatique des problèmes 
-- [ ] documentation des fonctions de l'interface
-- Erreurs utilisateur :
-    - [ ] ajouter une fonctionnalité d'annulation
-    - [ ] rattraper les erreurs de type
-	- [ ] ajouter un nombre maximum d'objets dans World
-- [ ] ajouter d'autres problèmes
+- [ ] cli : historique des actions : 
+  l.divise()
+  minimum(l)
+
 
 - [~] ajouter une fonctionnalité de destruction d'objet
 - +afficher les docstring dans Problème_minimum.apply_operation+

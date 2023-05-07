@@ -33,10 +33,23 @@ def minimum(l):
                   
 if not __name__:
     Problème(name = problem_name,
-            type = problem_type,
-            doc = problem_doc,
-            entrée_fun = génère_entrée,
-            problem_mets = ["divise"],
-            problem_funs = [],
-            solution_fun = (minimum, "minimum"),
-            rec_mode = len)
+             type = problem_type,
+             doc = problem_doc,
+             entrée_fun = génère_entrée,
+             input_types = [Entier],
+             problem_mets = ["divise"],
+             problem_funs = [],
+             solution_fun = (minimum, "minimum"),
+             rec_mode = len)
+
+
+    # Plus clean ainsi mais code à adapter
+    # Problème(name = problem_name,
+    #          type = problem_type,
+    #          doc = problem_doc,
+    #          entrée_fun = génère_entrée,
+    #          input_types = [Entier],
+    #          problem_mets = [Liste.divise],
+    #          problem_funs = [],
+    #          solution_fun = minimum, 
+    #          rec_mode = len)

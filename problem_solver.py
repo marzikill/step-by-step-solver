@@ -14,6 +14,7 @@ class Problème:
     type: str = "Problème type"
     doc: str = "Problème documentation"
     entrée_fun: 'typing.Any' = "fonction"
+    input_types: list = ()
     solution_fun: tuple = ()
     problem_mets: list = ()
     problem_funs: list = ()
@@ -25,7 +26,10 @@ class Problème:
             return 
         ProblemIndex[self.name] = self
              
-class InputOutputException(Exception):
+class InputException(Exception):
+    pass
+
+class OutputException(Exception):
     pass
 
 class Problème_Solver:
@@ -36,6 +40,18 @@ class Problème_Solver:
         self.generate_problem_data()
 
         # Ajout des fonctions et méthodes du problème
+        for type in problem.input_types:
+            def ask_input():
+                raise InputException(type)
+            ask_input.__doc__ = f" I/O -> {type.__name__}"
+            self.monde.add_function((ask_input, type.__name__))
+
+        # Cf commentaire problèmes/minimum.py
+        # for fun in problem.problem_funs:
+        #     self.monde.add_function((fun, fun.__name__))
+        # for meth in problem.problem_mets:
+        #     self.monde.add_method(meth.__name__)
+
         for fun_info in problem.problem_funs:
             self.monde.add_function(fun_info)
         for meth_info in problem.problem_mets:
@@ -101,9 +117,9 @@ class Problème_Solver:
         """ Vérifie que les objets sélectionnés sont solution. """
         def propose(*args):
             if self.vérifie_solution(*args):
-                raise InputOutputException("Bravo vous avez résolu le problème.")
+                raise OutputException("Bravo vous avez résolu le problème.")
             else:
-                raise InputOutputException("Ça n'est pas la bonne réponse, il faut continuer.")
+                raise OutputException("Ça n'est pas la bonne réponse, il faut continuer.")
         # Les fonctions ont une documentation du type :
         # Type1, Type2, Type3 -> Type1', Type2'
         # Description de la fonction.
@@ -112,6 +128,10 @@ class Problème_Solver:
         propose.__doc__ = f"{sig} -> I/O"
         return propose
 
+    def make_input(self, exception, data):
+        """ Ajoute au monde un objet lors d'une exception entrée """
+        type, = exception.args
+        self.monde.add_object(type(*data))
 
     def select_apply_operation(self, op_name, data_names):
         op = self.monde.functions[op_name]

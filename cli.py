@@ -1,6 +1,6 @@
 import urwid
 from collections import OrderedDict
-from problem_solver import ProblemIndex, Problème_Solver, InputOutputException
+from problem_solver import ProblemIndex, Problème_Solver, InputException, OutputException
 
 palette = [
     ('selected', 'black', 'light gray'),
@@ -175,9 +175,11 @@ class ProblemSolverController:
         self.selected_data = []
         try:
             self.pb.select_apply_operation(fun_name, data_names)
-        except (ValueError, TypeError, RecursionError, AttributeError, InputOutputException) as e:
+        except (ValueError, TypeError, RecursionError, AttributeError, OutputException) as e:
             self.view.popup(e.__str__())
-            return
+        except InputException as e:
+            a = (42, "ma variable")
+            self.pb.make_input(e, a)
         self.selected_fun = None
         self.view.update()
         self.view.focus(1, 1)
