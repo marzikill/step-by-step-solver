@@ -1,9 +1,6 @@
 import re
 from utils import encapsulate, count_args, new_object_name, sig, find_method_doc
 
-class OutException(Exception):
-    pass
-
 class World:
     def __init__(self):
         self.objects = {}
@@ -32,10 +29,10 @@ class World:
         data = [self.objects[k] for k in self.active_data]
         if not all([o.__class__.__name__ == T
                     for o, T in zip(data, self.functions_sig[fun_name])]):
-            raise TypeError(f"Les arguments sélectionnés n'ont pas le bon type",
-                            self.functions_sig[fun_name],
-                            [(o.__class__.__name__, T)
-                             for o, T in zip(data, self.functions_sig[fun_name])])
+            raise TypeError(f"Les arguments sélectionnés n'ont pas le bon type")
+                            # self.functions_sig[fun_name],
+                            # [(o.__class__.__name__, T)
+                            #  for o, T in zip(data, self.functions_sig[fun_name])])
         self.active_data = []
         return data
 
@@ -66,7 +63,10 @@ class World:
     def add_method(self, meth_name):
         """ Les méthodes 'consomment' les objets auxquelles elles s'appliquent. """
         def method_with_selection():
-            object_name = self.active_data.pop(0)
+            try:
+                object_name = self.active_data.pop(0)
+            except IndexError:
+                raise ValueError("Aucun objet n'est sélectionné. ")
             try:
                 fun = self.objects[object_name].interface[meth_name]
             except AttributeError:

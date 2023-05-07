@@ -1,5 +1,4 @@
 # TODO
-- [ ] BUG divise si rien n'est sélectionné : pop from empty list
 - [ ] popup input utilisateur
 - [ ] nettoyer le code :
   Problèmes de design :
