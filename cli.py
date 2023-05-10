@@ -22,7 +22,10 @@ def menu(title, choices, fun, view, hl = None):
     for c, d in choices:
         # button = urwid.Button(c)
         # urwid.connect_signal(button, 'click', fun, c)
-        button = HelpButton(c, d, fun, c, view)
+        try:
+            button = HelpButton(c, d, fun, c, view)
+        except:
+            raise Exception(view.controller.pb.monde.functions)
         if c in hl:
             body.append(urwid.AttrMap(button, 'selected'))
         else:
@@ -148,12 +151,8 @@ class ProblemSolverController:
 
     def sel_fun(self, button, choice):
         """ Sélectionne la fonction choice """
-        if choice == 'info':
-            res = self.pb.info()
-            self.view.popup(res)
-            return
         self.selected_fun = choice
-        if self.auto_sel_mode:
+        if self.auto_sel_mode or choice == 'info':
             self.selected_data = self.pb.monde.object_names()
             self.send_data()
             return

@@ -1,28 +1,12 @@
 import random
 from problem_solver import Problème
 from data_structures import Liste, Entier
+from generate import alternate, mini_last, mini_first
 
 problem_name = "minimum"
-problem_type = "liste -> int"
+problem_type = "liste -> int" # Inutile à priori
 problem_doc = "Étant donné une liste l non vide renvoyer le plus petit élément de l"
 difficulté_type = "la longueur de la liste l"
-
-def génère_entrée(difficulté, case = [0]):
-    """ int -> Liste """
-    if difficulté <= 1:
-        return Liste([Entier(random.randint(-10, 10))])
-
-    res = [Entier(random.randint(-10, 10))
-                          for _ in range(difficulté - 1)]
-    if case[0] == 0:
-        # le minimum est le dernier élément de la liste
-        case[0] = 1
-        res =  res + [Entier(min(res).n - random.randint(1, 5))]
-    else:
-        # le minimum est le premier élément de la liste
-        case[0] = 0
-        res =  [Entier(min(res).n - random.randint(1, 5))] + res
-    return Liste(res, name = "l")
 
 def minimum(l):
     """ Liste -> Entier 
@@ -35,21 +19,9 @@ if not __name__:
     Problème(name = problem_name,
              type = problem_type,
              doc = problem_doc,
-             entrée_fun = génère_entrée,
+             entrée_fun = alternate(mini_first, mini_last),
              input_types = [Entier],
-             problem_mets = ["divise"],
-             problem_funs = [],
-             solution_fun = (minimum, "minimum"),
+             problem_mets = [],
+             problem_funs = [Liste.divise, Liste.ajoute],
+             solution_fun = minimum,
              rec_mode = len)
-
-
-    # Plus clean ainsi mais code à adapter
-    # Problème(name = problem_name,
-    #          type = problem_type,
-    #          doc = problem_doc,
-    #          entrée_fun = génère_entrée,
-    #          input_types = [Entier],
-    #          problem_mets = [Liste.divise],
-    #          problem_funs = [],
-    #          solution_fun = minimum, 
-    #          rec_mode = len)

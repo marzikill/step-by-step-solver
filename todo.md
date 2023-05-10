@@ -1,19 +1,9 @@
 # TODO
+- [ ] mettre à jour les problèmes avec la nouvelle interface
+- [ ] mettre à jour la documentation avec la nouvelle interface
 - [ ] popup input utilisateur
-- [ ] nettoyer le code :
-  Problèmes de design :
-  généraliser ce qui a été fait pour le problème minimum (cf commentaires)
-  - que pense-t-on de "ne pas faire la distinction entre fonction/méthode -> ne manipuler que des fonctions" ?
-  - que pense-t-on de "les méthodes mutent l'objet sur lequel elles s'appliquent ?"
-	- certaines méthodes mutent les objets (genre ajoute)
-	- d'autre non (genre divise)
-	- la plupart du temps les fonctions manipulées ne mutent pas les objets
-  -> tout est fonction mais certaines fonctions mutent les objets auxquelles elles s'appliquent, d'autres non. Utiliser le mécanisme `id` de python comme identificateur dans le World ?
-  - que pense-t-on de "input est une méthode du type" vs "étant donné un type, le pb construit une fonction d'input" ?
-- [ ] implémenter un objet fonction : gestion des signatures etc
+- [ ] nouveau type : arbres
 - [ ] cli : historique des actions : 
-  l.divise()
-  minimum(l)
 
 
 - [~] ajouter une fonctionnalité de destruction d'objet
@@ -46,3 +36,14 @@
 	- [X] insere_triée.py 
 	- [X] tri_selection.py 
 	- [X] tri_insertion_iter.py
+- [X] nettoyer le code :
+  Problèmes de design :
+  généraliser ce qui a été fait pour le problème minimum (cf commentaires)
+  - que pense-t-on de "ne pas faire la distinction entre fonction/méthode -> ne manipuler que des fonctions" ?
+  - que pense-t-on de "les méthodes mutent l'objet sur lequel elles s'appliquent ?"
+	- certaines méthodes mutent les objets (genre ajoute)
+	- d'autre non (genre divise)
+	- la plupart du temps les fonctions manipulées ne mutent pas les objets
+  -> tout est fonction mais certaines fonctions mutent les objets auxquelles elles s'appliquent, d'autres non. Utiliser le mécanisme `id` de python comme identificateur dans le World ?
+  - que pense-t-on de "input est une méthode du type" vs "étant donné un type, le pb construit une fonction d'input" ?
+- [X] implémenter un objet fonction : gestion des signatures etc

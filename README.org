@@ -1,6 +1,8 @@
 #+title: step-by-step-solver: practical algorithms
 #+options: toc:nil
 
+WARNING : DEPRECATED
+
 * Overview
 
 This program aims at helping students to understand how algorithms
