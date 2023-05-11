@@ -50,7 +50,7 @@ class Problème_Solver:
             ask_input.__doc__ = f" I/O -> {type.__name__}\n" + "Saisir un entier."
             self.add_function(ask_input)
 
-        for fun in problem.problem_funs + problem.problem_mets:
+        for fun in problem.problem_funs:
             self.add_function(fun)
 
         # Ajout des fonctions et méthodes du solveur
@@ -63,7 +63,7 @@ class Problème_Solver:
         self.add_function(self.info)
 
 
-    def add_function(self, fun, rec_mode=None, max_size=0):
+    def add_function(self, fun, rec_mode=None, max_size=float('inf')):
         """ Lorsque rec_mode est défini, il est possible d'appeler 
         la fonction solution du problème lorsque celle-ci opère sur 
         des objets de taille inférieure à la difficulté du problème. """

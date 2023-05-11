@@ -40,9 +40,12 @@ class Entier(BaseObject):
 
 class Function(BaseObject):
     """ Représente une fonction sans arguments nommés """
-    def __init__(self, f, rec_mode=None, max_size=0):
+    def __init__(self, f, rec_mode=None, max_size=float('inf')):
         super().__init__(f, f.__name__)
-        self.rec_mode = rec_mode
+        def default_rec_mode(*args):
+            return None
+        self.rec = rec_mode
+        self.rec_mode = default_rec_mode if not rec_mode else rec_mode
         self.max_size = max_size
 
     def check_args(self, args):
@@ -69,7 +72,7 @@ class Function(BaseObject):
     def __call__(self, *args):
         if not self.signature:
             return self.apply_return_tuple(args)
-        if self.rec_mode and self.rec_mode(*args) >= self.max_size:
+        if self.rec and self.rec_mode(*args) >= self.max_size:
             raise RecursionError("Le problème est trop dur")
 
         self.check_args(args)
@@ -77,7 +80,7 @@ class Function(BaseObject):
         # Rename output 
         for i, o in enumerate(res):
             index_pos_str = '' if len(res) == 1 else f"[{i}]"
-            if not o.name:
+            if not o.name or self.rec_mode:
                 o.name = f"{self.name}(" + ", ".join(a.name for a in args) + ")" + index_pos_str 
         return res
         

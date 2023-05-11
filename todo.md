@@ -1,4 +1,7 @@
 # TODO
+- [ ] bug : il ne faut pas mettre de signature aux fonctions de génération
+  comme on en fait un objet Fonction il renome sa sortie en fonction de l'entrée
+  or les entiers n'ont pas d'attribut .name.
 - [ ] mettre à jour les problèmes avec la nouvelle interface
 - [ ] mettre à jour la documentation avec la nouvelle interface
 - [ ] popup input utilisateur
