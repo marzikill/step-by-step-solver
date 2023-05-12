@@ -20,7 +20,7 @@ def divise_en_2(l):
 
 if not __name__:
     Problème(name = "Diviser",
-             entrée_fun = random_liste,
+             generating_fun = random_liste,
              problem_funs = [Liste.divise, Liste.ajoute],
              solution_fun = divise_en_2, 
              rec_mode=len)

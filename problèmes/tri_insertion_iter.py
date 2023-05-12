@@ -6,7 +6,7 @@ problem_name = "tri_insertion_iter"
 problem_type = "tableau -> tableau"
 problem_args = 1
 problem_doc = "Trier un tableau tab"
-difficulté_type = "la longueur de la liste l"
+level_type = "la longueur de la liste l"
 
 # Exemple : Avec une structure de donnée maison :
 # on cherche à implémenter l'activité qui se trouve à :
@@ -47,12 +47,13 @@ class Tableau(BaseObject):
     def __eq__(self, o): return self.content == o.content
         
 
-def génère_entrée(difficulté):
-    return Tableau([random.randint(-10, 10) for _ in range(difficulté)],
+def génère_entrée(level):
+    return Tableau([random.randint(-10, 10) for _ in range(level)],
                    name = "tab")
 
 def tri_insertion(tab):
-    """ Tableau -> Tableau """
+    """ Tableau -> Tableau
+    Implémente l'algorithme du tri par insertion. """
     tab = Tableau(sorted(tab.content))
     tab.indice_insérer = len(tab.content)
     return tab
@@ -60,6 +61,6 @@ def tri_insertion(tab):
 
 if not __name__:
     Problème(name = "Tri par insertion (itératif)",
-             entrée_fun = génère_entrée,
+             generating_fun = génère_entrée,
              problem_funs = [Tableau.échange_gauche, Tableau.dépose],
              solution_fun = tri_insertion)

@@ -106,7 +106,7 @@ The ~Problem~ class has various attributes :
 | ~name~         | A string describing the problem name                                                                |
 | ~type~         | A string describing the solution function signature                                                 |
 | ~doc~          | A string explaining the problem                                                                     |
-| ~entrée_fun~   | A function to use in order to generate problem entries                                              |
+| ~generating_fun~   | A function to use in order to generate problem entries                                              |
 | ~problem_mets~ | A list of strings. The user will be able to use corresponding method to solve the problem.          |
 | ~problem_funs~ | A list of tuples, the first element being a function, the second being a string (the function name) |
 | ~solution_fun~ | A tuple, the first element being a function, the second being a string (the function name)          |

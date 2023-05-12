@@ -12,7 +12,7 @@ def minimum(l):
                   
 if not __name__:
     Problème(name = "Minimum (recursif)",
-             entrée_fun = alternate(mini_first, mini_last),
+             generating_fun = alternate(mini_first, mini_last),
              input_types = [],
              problem_funs = [Liste.divise, Liste.ajoute],
              solution_fun = minimum,

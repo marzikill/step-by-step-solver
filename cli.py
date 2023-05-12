@@ -1,6 +1,6 @@
 import urwid
 from collections import OrderedDict
-from problem_solver import ProblemIndex, Problème_Solver, InputException, OutputException
+from problem_solver import ProblemIndex, ProblemInstance, InputException, OutputException
 
 palette = [
     ('selected', 'black', 'light gray'),
@@ -145,7 +145,7 @@ class ProblemSolverController:
         self.selected_pb = choice
         self.selected_fun = None
         self.selected_data = []
-        self.pb = Problème_Solver(5, ProblemIndex[choice])
+        self.pb = ProblemInstance(5, ProblemIndex[choice])
         self.view.update()
         self.view.focus(1, 1)
 
@@ -156,6 +156,8 @@ class ProblemSolverController:
             self.selected_data = self.pb.monde.object_names()
             self.send_data()
             return
+        self.selected_fun_needed_args = len(self.pb.fun(choice).signature['in'])
+        self.try_apply()
         self.view.update()
         self.view.focus(1, 0)
 
@@ -165,7 +167,15 @@ class ProblemSolverController:
             self.selected_data.append(choice)
         else:
             self.selected_data.remove(choice)
+        self.try_apply()
         self.view.update()
+
+
+    def try_apply(self):
+        # Applique automatiquement la sélection de l'utilisateur lorsque
+        # les arguments sont sélectionnés.
+        if self.selected_fun and self.selected_fun_needed_args == len(self.selected_data):
+            self.send_data()
 
     def send_data(self):
         """ Applique la sélection de l'utilisateur """

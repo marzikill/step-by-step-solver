@@ -2,15 +2,18 @@ from problem_solver import Problème
 from generate import random_liste
 from data_structures import Liste, Entier
 
-def génère_entrée(difficulté):
-    l1 = random_liste(difficulté//2)
+def génère_entrée(level):
+    l1 = random_liste(level//2)
     l1.name = "l1"
-    l2 = random_liste(difficulté//2 + difficulté%2)
+    l2 = random_liste(level//2 + level%2)
     l2.name = "l2"
     return l1, l2
 
 def fusionne(l1, l2):
-    """ Liste, Liste -> Liste """
+    """ Liste, Liste -> Liste
+    Étant donné deux listes l1 et l2 supposées triées toutes les deux,
+    renvoyer une liste constituée des éléments de l1 et de l2 triés
+    par ordre croissant. """
     if l1.est_vide() and l2.est_vide():
         return Liste([])
     elif l1.est_vide():
@@ -29,7 +32,7 @@ def fusionne(l1, l2):
 
 if not __name__:
     Problème(name = "Fusionner", 
-            entrée_fun = génère_entrée,
+            generating_fun = génère_entrée,
             problem_funs = [Liste.divise, Liste.ajoute],
             solution_fun = fusionne, 
             rec_mode = lambda l1, l2: len(l1) + len(l2))

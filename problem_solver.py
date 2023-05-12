@@ -11,13 +11,10 @@ ProblemIndex = dict()
 @dataclass
 class Problème:
     name: str = "Problem name"
-    type: str = "Problème type"
-    doc: str = "Problème documentation"
-    entrée_fun: 'typing.Any' = "fonction"
+    generating_fun: 'typing.Any' = "fonction"
     input_types: list = ()
-    solution_fun: tuple = ()
-    problem_mets: list = ()
     problem_funs: list = ()
+    solution_fun: tuple = ()
     rec_mode: 'typing.Any' = None
 
     def __post_init__(self):
@@ -25,6 +22,10 @@ class Problème:
             print(f"Problème {self.name} déjà enregistré !")
             return 
         ProblemIndex[self.name] = self
+
+    @property
+    def doc(self):
+        return Function(self.solution_fun).doc
              
 class OutputException(Exception):
     pass
@@ -32,15 +33,16 @@ class OutputException(Exception):
 class InputException(Exception):
     pass
 
-class Problème_Solver:
+class ProblemInstance:
     def __init__(self, n, problem):
         self.problem = problem
-        self.in_fun = Function(self.problem.entrée_fun)
+        self.in_fun = Function(self.problem.generating_fun)
         self.sol_fun = Function(problem.solution_fun)
         self.signature = self.sol_fun.signature
-        self.difficulté = n
+        self.level = n
         self.monde = World()
         self.generate_problem_data()
+        self.available_funs = []
 
         # Ajout des fonctions et méthodes du problème
         for type in problem.input_types:
@@ -57,7 +59,7 @@ class Problème_Solver:
         if problem.rec_mode:
             self.add_function(problem.solution_fun,
                                     rec_mode = problem.rec_mode,
-                                    max_size = self.difficulté)
+                                    max_size = self.level)
 
         self.add_function(self.propose_solution())
         self.add_function(self.info)
@@ -66,9 +68,10 @@ class Problème_Solver:
     def add_function(self, fun, rec_mode=None, max_size=float('inf')):
         """ Lorsque rec_mode est défini, il est possible d'appeler 
         la fonction solution du problème lorsque celle-ci opère sur 
-        des objets de taille inférieure à la difficulté du problème. """
+        des objets de taille inférieure à la level du problème. """
 
         F = Function(fun, rec_mode=rec_mode, max_size=max_size)
+        self.available_funs.append(F)
         self.monde.add_function(F)
 
     def objects(self):
@@ -79,8 +82,12 @@ class Problème_Solver:
         return [(f_name, self.monde.docs[f_name])
                 for f_name in self.monde.fun_names()]
 
+    def fun(self, fun_name):
+        names = [f.name for f in self.available_funs]
+        return self.available_funs[names.index(fun_name)]
+
     def generate_problem_data(self):
-        self.entrée = self.in_fun(self.difficulté)
+        self.entrée = self.in_fun(self.level)
         self.monde.objects = {}
         for o in self.entrée:
             self.monde.add_object(o)
@@ -88,7 +95,7 @@ class Problème_Solver:
 
     def info(self, *args):
         """ Énoncé du problème """
-        doc = f"PROBLÈME {self.problem.name} (difficulté {self.difficulté}) :\n"
+        doc = f"PROBLÈME {self.problem.name} (level {self.level}) :\n"
         doc += self.sol_fun.signature_str
         doc += self.sol_fun.doc
         raise OutputException(doc)
