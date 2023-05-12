@@ -1,4 +1,5 @@
 import random
+from data_structures import BaseObject
 from problem_solver import Problème
 
 problem_name = "tri_insertion_iter"
@@ -10,17 +11,11 @@ difficulté_type = "la longueur de la liste l"
 # Exemple : Avec une structure de donnée maison :
 # on cherche à implémenter l'activité qui se trouve à :
 # https://www.advanced-ict.info/interactive/insertion_sort.html
-class Tableau:
+class Tableau(BaseObject):
     def __init__(self, content, name = ""):
-        self.name = name
-        self.content = content
+        super().__init__(content, name)
         self.indice_courant = 0
         self.indice_insérer = 0
-        self.interface = {
-            "échange_gauche": self.échange_gauche,
-            "dépose": self.dépose
-        }
-
 
     def échange_gauche(self):
         """ Échange l'élément actif du tableau avec celui d'avant """
@@ -53,23 +48,18 @@ class Tableau:
         
 
 def génère_entrée(difficulté):
-    """ int -> Tableau """
     return Tableau([random.randint(-10, 10) for _ in range(difficulté)],
                    name = "tab")
 
-
 def tri_insertion(tab):
     """ Tableau -> Tableau """
-    tab =  Tableau(sorted(tab.content))
+    tab = Tableau(sorted(tab.content))
     tab.indice_insérer = len(tab.content)
     return tab
 
 
 if not __name__:
-    Problème(name = problem_name,
-            type = problem_type,
-            doc = problem_doc,
-            entrée_fun = génère_entrée,
-            problem_mets = ["échange_gauche", "dépose"],
-            problem_funs = [],
-            solution_fun = (tri_insertion, "tri_insertion"))
+    Problème(name = "Tri par insertion (itératif)",
+             entrée_fun = génère_entrée,
+             problem_funs = [Tableau.échange_gauche, Tableau.dépose],
+             solution_fun = tri_insertion)
