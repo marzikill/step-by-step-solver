@@ -141,7 +141,7 @@ class ProblemSolverController:
         self.auto_sel_mode = False
 
     def load_problem(self, button, choice):
-        """ Charge le problème sélectionné """
+        """ (re)Charge le problème sélectionné """
         self.selected_pb = choice
         self.selected_fun = None
         self.selected_data = []
@@ -150,7 +150,7 @@ class ProblemSolverController:
         self.view.focus(1, 1)
 
     def sel_fun(self, button, choice):
-        """ Sélectionne la fonction choice """
+        """ Sélectionne la fonction choice. """
         self.selected_fun = choice
         if self.auto_sel_mode or choice == 'info':
             self.selected_data = self.pb.monde.object_names()
@@ -172,13 +172,15 @@ class ProblemSolverController:
 
 
     def try_apply(self):
-        # Applique automatiquement la sélection de l'utilisateur lorsque
-        # les arguments sont sélectionnés.
+        """ Applique automatiquement la sélection de l'utilisateur lorsque
+        le nombre requis d'arguments par la fonction sont sélectionnés. """
         if self.selected_fun and self.selected_fun_needed_args == len(self.selected_data):
             self.send_data()
 
     def send_data(self):
-        """ Applique la sélection de l'utilisateur """
+        """ Applique la sélection de l'utilisateur et réinitialise 
+        la sélection des données. La fonction sélectionnée est 
+        réinitialisée dans le cas où l'appel est effectué avec succès. """
         data_names = [c.split(' : ')[0] for c in self.selected_data]
         fun_name = self.selected_fun
         self.selected_data = []
@@ -187,6 +189,7 @@ class ProblemSolverController:
         except (ValueError, TypeError, RecursionError, AttributeError, OutputException) as e:
             self.view.popup(e.__str__())
         except InputException as e:
+            # Todo : inplémentener un popup demandant une entrée utilisateur
             a = (42, "ma variable")
             self.pb.make_input(e, a)
         self.selected_fun = None

@@ -41,8 +41,8 @@ class ProblemInstance:
         self.signature = self.sol_fun.signature
         self.level = n
         self.monde = World()
+        self.available_funs = dict() # dict(f_name: str, F: Function)
         self.generate_problem_data()
-        self.available_funs = []
 
         # Ajout des fonctions et méthodes du problème
         for type in problem.input_types:
@@ -55,12 +55,6 @@ class ProblemInstance:
         for fun in problem.problem_funs:
             self.add_function(fun)
 
-        # Ajout des fonctions et méthodes du solveur
-        if problem.rec_mode:
-            self.add_function(problem.solution_fun,
-                                    rec_mode = problem.rec_mode,
-                                    max_size = self.level)
-
         self.add_function(self.propose_solution())
         self.add_function(self.info)
 
@@ -71,7 +65,7 @@ class ProblemInstance:
         des objets de taille inférieure à la level du problème. """
 
         F = Function(fun, rec_mode=rec_mode, max_size=max_size)
-        self.available_funs.append(F)
+        self.available_funs[F.name] = F
         self.monde.add_function(F)
 
     def objects(self):
@@ -83,10 +77,16 @@ class ProblemInstance:
                 for f_name in self.monde.fun_names()]
 
     def fun(self, fun_name):
-        names = [f.name for f in self.available_funs]
-        return self.available_funs[names.index(fun_name)]
+        return self.available_funs[fun_name]
 
     def generate_problem_data(self):
+        # Lorsque l'on régénère le problème il faut également
+        # mettre à jour la fonction solution seuillée (dépend de level).
+        if self.problem.rec_mode:
+            self.add_function(self.problem.solution_fun,
+                                    rec_mode = self.problem.rec_mode,
+                                    max_size = self.level)
+
         self.entrée = self.in_fun(self.level)
         self.monde.objects = {}
         for o in self.entrée:
@@ -107,6 +107,10 @@ class ProblemInstance:
         def propose(*args):
             """ Vérifie que les objets sélectionnés sont solution. """
             if self.vérifie_solution(*args):
+                # Dans le cas où l'élève trouve la solution, on régénère
+                # un problème de difficulté supérieure. 
+                self.level += 1
+                self.generate_problem_data()
                 raise OutputException("Bravo vous avez résolu le problème.")
             else:
                 raise OutputException("Ça n'est pas la bonne réponse, il faut continuer.")
