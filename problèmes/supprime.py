@@ -16,6 +16,7 @@ def del_last(level):
     e.name = 'e'
     return liste, e
 
+@Problème.recursive(lambda l, e: len(l))
 def supprime(l, e):
     """ Liste, Entier -> Liste
     l est une liste supposée non vide et e appartient à l
@@ -35,5 +36,4 @@ if not __name__:
     Problème(name = "Supprimer",
              generating_fun = alternate(del_first, del_last),
              problem_funs = [Liste.divise, Liste.ajoute],
-             solution_fun = supprime, 
-             rec_mode = lambda l, e: len(l))
+             solution_fun = supprime)

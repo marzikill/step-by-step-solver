@@ -9,6 +9,7 @@ def génère_entrée(level):
     l2.name = "l2"
     return l1, l2
 
+@Problème.recursive(lambda l1, l2: len(l1) + len(l2))
 def fusionne(l1, l2):
     """ Liste, Liste -> Liste
     Étant donné deux listes l1 et l2 supposées triées toutes les deux,
@@ -34,6 +35,5 @@ if not __name__:
     Problème(name = "Fusionner", 
             generating_fun = génère_entrée,
             problem_funs = [Liste.divise, Liste.ajoute],
-            solution_fun = fusionne, 
-            rec_mode = lambda l1, l2: len(l1) + len(l2))
+            solution_fun = fusionne)
 

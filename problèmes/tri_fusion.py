@@ -4,6 +4,7 @@ from data_structures import Liste, Entier
 from problèmes.divise import divise_en_2
 from problèmes.fusionne import fusionne
 
+@Problème.recursive(len)
 def tri_fusion(l):
     """ Liste -> Liste
     Implémente l'algorithme du tri fusion. """
@@ -18,5 +19,4 @@ if not __name__:
     Problème(name = "Tri fusion",
              generating_fun = random_liste,
              problem_funs = [divise_en_2, fusionne],
-             solution_fun = tri_fusion, 
-             rec_mode = len)
+             solution_fun = tri_fusion)

@@ -4,6 +4,7 @@ from problèmes.minimum import minimum
 from problèmes.supprime import supprime
 from data_structures import Liste, Entier
 
+@Problème.recursive(len)
 def tri_sélection(l):
     """ Liste -> Liste
     Implémente l'algorithme du tri par sélection. """
@@ -14,5 +15,4 @@ if not __name__:
     Problème(name = "Tri par sélection (récursif)",
              generating_fun = random_liste,
              problem_funs = [Liste.ajoute, supprime, minimum],
-             solution_fun = tri_sélection, 
-             rec_mode = len)
+             solution_fun = tri_sélection)

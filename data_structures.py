@@ -44,7 +44,7 @@ class Function(BaseObject):
         super().__init__(f, f.__name__)
         def default_rec_mode(*args):
             return None
-        self.rec = rec_mode
+        self.rec = rec_mode is not None
         self.rec_mode = default_rec_mode if not rec_mode else rec_mode
         self.max_size = max_size
 
@@ -80,7 +80,7 @@ class Function(BaseObject):
         # Rename output 
         for i, o in enumerate(res):
             index_pos_str = '' if len(res) == 1 else f"[{i}]"
-            if not o.name or self.rec_mode:
+            if not o.name or self.rec:
                 o.name = f"{self.name}(" + ", ".join(a.name for a in args) + ")" + index_pos_str 
         return res
         

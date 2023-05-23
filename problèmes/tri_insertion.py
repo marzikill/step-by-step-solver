@@ -3,6 +3,7 @@ from generate import random_liste
 from data_structures import Liste, Entier
 from problèmes.insere_triée import insère_triée
 
+@Problème.recursive(len)
 def tri_insertion(l):
     """ Liste -> Liste
     Implémente l'algorithme du tri par insertion. """
@@ -14,5 +15,4 @@ if not __name__:
     Problème(name = "Tri par insertion (récursif)",
              generating_fun = random_liste,
              problem_funs = [Liste.divise, insère_triée],
-             solution_fun = tri_insertion, 
-             rec_mode = len)
+             solution_fun = tri_insertion)

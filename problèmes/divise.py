@@ -3,6 +3,7 @@ from problem_solver import Problème
 from generate import random_liste
 from data_structures import Liste, Entier
 
+@Problème.recursive(len)
 def divise_en_2(l):
     """ Liste -> Liste, Liste
     Étant donnée une liste, la divise en deux listes de
@@ -22,5 +23,4 @@ if not __name__:
     Problème(name = "Diviser",
              generating_fun = random_liste,
              problem_funs = [Liste.divise, Liste.ajoute],
-             solution_fun = divise_en_2, 
-             rec_mode=len)
+             solution_fun = divise_en_2)

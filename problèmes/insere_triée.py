@@ -13,6 +13,7 @@ def insert_last(level):
     val = liste[-1].content - random.randint(1, 5)
     return Liste(liste, name = "l"), Entier(val, name = "e")
 
+@Problème.recursive(lambda l, e: len(l))
 def insère_triée(l, e):
     """ Liste, Entier -> Liste
     l est une liste supposée triée par ordre croissant.
@@ -27,5 +28,4 @@ if not __name__:
     Problème(name = "Insérer (liste triée)",
              generating_fun = alternate(insert_first, insert_last),
              problem_funs = [Liste.divise, Liste.ajoute],
-             solution_fun = insère_triée, 
-             rec_mode = lambda l, e: len(l))
+             solution_fun = insère_triée)

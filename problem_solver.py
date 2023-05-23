@@ -15,7 +15,6 @@ class Problème:
     input_types: list = ()
     problem_funs: list = ()
     solution_fun: tuple = ()
-    rec_mode: 'typing.Any' = None
 
     def __post_init__(self):
         if ProblemIndex.get(self.name):
@@ -26,6 +25,17 @@ class Problème:
     @property
     def doc(self):
         return Function(self.solution_fun).doc
+
+    def recursive(rec_mode):
+        """ Déclarer une fonction récursive """
+        def wrapper(fun):
+            fun.rec_mode = rec_mode
+            return fun
+        return wrapper
+
+    def get_rec_mode(self, f):
+        """ Renvoie une fonction ou None """
+        return f.__dict__.get('rec_mode')
              
 class OutputException(Exception):
     pass
@@ -59,11 +69,12 @@ class ProblemInstance:
         self.add_function(self.info)
 
 
-    def add_function(self, fun, rec_mode=None, max_size=float('inf')):
+    def add_function(self, fun, max_size=float('inf')):
         """ Lorsque rec_mode est défini, il est possible d'appeler 
         la fonction solution du problème lorsque celle-ci opère sur 
         des objets de taille inférieure à la level du problème. """
 
+        rec_mode = self.problem.get_rec_mode(fun)
         F = Function(fun, rec_mode=rec_mode, max_size=max_size)
         self.available_funs[F.name] = F
         self.monde.add_function(F)
@@ -82,10 +93,8 @@ class ProblemInstance:
     def generate_problem_data(self):
         # Lorsque l'on régénère le problème il faut également
         # mettre à jour la fonction solution seuillée (dépend de level).
-        if self.problem.rec_mode:
-            self.add_function(self.problem.solution_fun,
-                                    rec_mode = self.problem.rec_mode,
-                                    max_size = self.level)
+        self.add_function(self.problem.solution_fun,
+                          max_size = self.level)
 
         self.entrée = self.in_fun(self.level)
         self.monde.objects = {}
