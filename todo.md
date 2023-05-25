@@ -1,4 +1,6 @@
 # TODO
+- [ ] bug : le mécanisme de vérification des types n'est vraiment pas au point (héritage impossible)
+- [ ] bug : construction de la signature dans le cas ou '->' est utilisé dans la documentation autre part que dans la déclaration des types
 - [ ] bug : il ne faut pas mettre de signature aux fonctions de génération
   comme on en fait un objet Fonction il renome sa sortie en fonction de l'entrée
   or les entiers n'ont pas d'attribut .name.

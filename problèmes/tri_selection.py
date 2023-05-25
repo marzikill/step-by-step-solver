@@ -1,6 +1,6 @@
 from problem_solver import Problème
 from generate import random_liste
-from problèmes.minimum import minimum
+from problèmes.minimum_rec import minimum
 from problèmes.supprime import supprime
 from data_structures import Liste, Entier
 
