@@ -90,11 +90,15 @@ class ProblemInstance:
     def fun(self, fun_name):
         return self.available_funs[fun_name]
 
+    def is_recursive(self):
+        return self.problem.get_rec_mode(self.problem.solution_fun) is not None
+
     def generate_problem_data(self):
         # Lorsque l'on régénère le problème il faut également
         # mettre à jour la fonction solution seuillée (dépend de level).
-        self.add_function(self.problem.solution_fun,
-                          max_size = self.level)
+        if self.is_recursive():
+            self.add_function(self.problem.solution_fun,
+                            max_size = self.level)
 
         self.entrée = self.in_fun(self.level)
         self.monde.objects = {}
