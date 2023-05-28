@@ -1,8 +1,6 @@
 #+title: step-by-step-solver: practical algorithms
 #+options: toc:nil
 
-WARNING : DEPRECATED
-
 * Overview
 
 This program aims at helping students to understand how algorithms
@@ -12,16 +10,16 @@ proposed a problem from a set of problems, and it has to solve it
 *using only some predefined functions*. The user selects one function
 from the interface and some objects : the program then applies the
 function to its selected arguments and waits for another
-operation. When the correct object has been built, the user has to
-propose its solution. The program verifies whether it's correct.
+operation. When the solution of the problem has been built, the user has to
+submit their solution. The program verifies whether it's correct.
 
 By doing so, students may visualize step by step executions of
 algorithms on actual data. By trial and errors, they may understand
-the order in which operations has to be performed. This program can
+the order in which operations have to be performed. This program can
 also help students to write python programs by displaying at every
 step the syntactically correct python expression corresponding to
-their actions. It also accustom students to use ~return~ statements when
-they write function, because they have to "propose" (e.g. return) a
+their actions. It also accustoms students to use ~return~ statements when
+they write functions, because they have to "submit" (e.g. return) a
 solution to the program.
 
 The project has been inspired by [[https://www.advanced-ict.info/interactive/insertion_sort.html][Insertion Sort Game]], where the user
@@ -29,17 +27,17 @@ has to sort an array using only two buttons ~Left~, and ~Stick~. The
 problem ~tri_insertion_iter~ tries to mimic this behavior and show how
 the teacher can use its owns data structures to virtually implement
 any problem. The interface is inspired by the proof assistant program
-Coq, where is displayed the current set of hypothesis on which to
-operate at any given time.
+Coq, where the current set of hypothesis on which to
+operate at any given time is shown to the user.
 
 This program also helps to explain how to solve problems using
 recursion, as it is explained in [[Usable interface][the recursion case]].
 
 * Defining a problem
 
-Every problem is defined in the folder ~./problèmes/~ or one of their
+Every problem should be defined in the folder ~./problèmes/~ or one of their
 subfolder. The problem is automatically available if any variable of
-class ~Problème~ is defined in the file. For instance, let's explain how
+type ~Problème~ is defined in the file. For instance, let's explain how
 to implement the problem of finding the minimum in a list ~l~, using
 recursion :
 - if the list ~l~ is of length 1 : return that element ;
@@ -49,7 +47,7 @@ recursion :
     - if ~m < head(l)~, then the minimum of the list is ~m~
     - else the minimum of ~l~ is ~head(l)~.
 
-When then start the code defining the problem by :
+Then start the code defining the problem by :
 
 #+BEGIN_SRC jupyter-python :session py
 from problem_solver import Problème
@@ -67,10 +65,7 @@ various cases can arise, as it is the case for minimum finding : in
 the general case, the minimum can be the head of the list or else
 belongs to the tail of the list.
 
-According to current the ~case~ :
-- either generate ~l~, a ~Liste~ of ~Entiers~, ~minimum(l)~ is its first element ;
-- or generate ~l~, a ~Liste~ of ~Entiers~, ~minimum(l)~ is near its last
-  element. 
+Generating functions can be found in the ~generate.py~ file. 
 
 ** Defining the solution
 
@@ -82,7 +77,10 @@ is of type ~Liste~. One can also give the "complete" recursive
 implementation using the interface of type ~Liste~ :
 
 #+BEGIN_SRC jupyter-python :session py
+@Problème.recursive(len)
 def minimum(l):
+    """ Liste -> Entier
+    Détermine le minimum de la liste l. """
     if l.est_singleton():
         return l.tete()
     else:
@@ -95,62 +93,48 @@ def minimum(l):
 
 #+RESULTS:
 
+If the decorator ~@Problème.recursive~ is used, it as to be given a function
+having the same arguments than the function it is applied to. 
+It outputs an int representing the data "complexity". When the function is
+used as the solution function for a problem, the user can apply it only to
+data with lower "complexity" than the current problem's difficulty.
+
+If type indications are given in the docstring or by using type hints, type
+checking is performed on function call.
+
 ** Exporting the problem 
 *** Defining a ~Problem~ variable 
 
 The ~Problem~ class has various attributes :
 
-|--------------+-----------------------------------------------------------------------------------------------------|
-| Attribute    | Description                                                                                         |
-|--------------+-----------------------------------------------------------------------------------------------------|
-| ~name~         | A string describing the problem name                                                                |
-| ~type~         | A string describing the solution function signature                                                 |
-| ~doc~          | A string explaining the problem                                                                     |
-| ~generating_fun~   | A function to use in order to generate problem entries                                              |
-| ~problem_mets~ | A list of strings. The user will be able to use corresponding method to solve the problem.          |
-| ~problem_funs~ | A list of tuples, the first element being a function, the second being a string (the function name) |
-| ~solution_fun~ | A tuple, the first element being a function, the second being a string (the function name)          |
-| ~rec_mode~     | Optional (function) : whether to allow recursion to solve the problem                               |
-|--------------+-----------------------------------------------------------------------------------------------------|
-
-*** Usable interface 
-
-When solving the problem, the user is proposed :
-- the methods of ~problem_mets~
-- the functions of ~problem_funs~
-- the ~solution_fun~ if ~rec_mode~ is defined. ~rec_mode~ is a function
-  having the same arguments than the solution function. It outputs an
-  int representing the data "complexity". When this variable is set,
-  the user might use the solution function only if the data it is
-  applied to has a "complexity" strictly lower than the problem
-  current difficulty. 
-
-  For instance, ~rec_mode~ might be set at ~len~ when solving the minimum
-  problem, but at ~lambda l1, l2: len(l1) + len(l2)~ when solving the
-  problem of fusion of two sorted list.
+|----------------+--------------------------------------------------------------------------------------------|
+| Attribute      | Description                                                                                |
+|----------------+--------------------------------------------------------------------------------------------|
+| ~name~           | A string describing the problem name                                                       |
+| ~generating_fun~ | A function to use in order to generate problem entries                                     |
+| ~problem_funs~   | A list of functions available to the user in order to solve the problem.              |
+| ~solution_fun~   | A function (~@Problème.recursive~ has to be used if recursive).
+|----------------+--------------------------------------------------------------------------------------------|
   
 *** Using other problems
 
 It is possible to use already defined functions. For example, if
 trying to implement the selection sort algorithm, one can first import
 the function ~minimum~ and make it usable by setting ~problem_funs~ to
-~[(minimum, "minimum")]~. Of course any number of functions might be
-added this way.
+~[minimum]~. It is also possible to add class methods like ~Liste.divise~.
 
 ** Custom data structures
 
 In addition to the already defined data structures, one can add its
-own data structures when creating new problems. An attribute ~interface~
-has to be defined, linking to exposed methods. Exposed methods *has to
-return an object* (or a list of objects) : they will be added to the
-environment whereas the old object to which the method was added will
-be popped out from the environment. 
-
-~__eq__~ and ~__repr__~ also has to be defined for verifing the solution and
-displaying objects. 
+own data structures when creating new problems. They have to inherit from
+~BaseObject~ class, defined in the ~data_structures.py~ file. Objects
+(or list of objects) returned by methods will automatically be added
+to the list of objects the user can operate on. 
 
 For an example of the implementation of [[https://www.advanced-ict.info/interactive/insertion_sort.html][Insertion Sort Game]] with our
-program, see ~tri_insertion_iter.py~.
+program, see ~tri_insertion_iter.py~. Other examples can be found in
+~minimum_iter.py~ (a ~TableauCaché~ object diplays its content only it has
+already been visited once).
 
 * Implemented data structures
 ** Entiers
