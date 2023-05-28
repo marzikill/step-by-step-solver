@@ -1,11 +1,5 @@
 import typing
 
-class UnsupportedOperation(Exception):
-    pass
-
-class InputException(Exception):
-    pass
-
 class BaseObject:
     def __init__(self, c, n):
         self.content = c
@@ -24,9 +18,6 @@ class BaseObject:
 
     def get_content(self):
         return self.content
-
-    def get_input(self):
-        raise InputException(self)
 
 class Entier(BaseObject):
     """ Un entier """
@@ -52,7 +43,7 @@ class Function(BaseObject):
         # Vérification du nombre d'arguments
         if not len(args) == len(self.signature['in']):
             raise ValueError(f"{len(args)} arguments passés à la fonction {self.name}, {len(self.signature['in'])} arguments attendus", self.signature['in'])
-        # Tous les arguments doivent être de bon type.
+        # Tous les arguments doivent être de bon type (exact, pas d'héritage)
         # Le type 'I/O' n'est pas pris en compte
         if not all([o.__class__.__name__ == T
                     for o, T in zip(args, self.signature['in'])
@@ -68,7 +59,6 @@ class Function(BaseObject):
             return res,
         return res
         
-
     def __call__(self, *args):
         if not self.signature:
             return self.apply_return_tuple(args)

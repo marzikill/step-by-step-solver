@@ -54,7 +54,7 @@ class ProblemInstance:
         self.available_funs = dict() # dict(f_name: str, F: Function)
         self.generate_problem_data()
 
-        # Ajout des fonctions et méthodes du problème
+        # Ajout des fonctions du problème
         for type in problem.input_types:
             def ask_input():
                 raise InputException(type)
