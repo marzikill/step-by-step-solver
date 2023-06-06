@@ -14,8 +14,8 @@ operation. When the solution of the problem has been built, the user has to
 submit their solution. The program verifies whether it's correct.
 
 By doing so, students may visualize step by step executions of
-algorithms on actual data. By trial and errors, they may understand
-the order in which operations have to be performed. This program can
+algorithms on actual data. By trials and errors, they may get a clear understanding
+of the order in which operations have to be performed. This program can
 also help students to write python programs by displaying at every
 step the syntactically correct python expression corresponding to
 their actions. It also accustoms students to use ~return~ statements when
@@ -47,7 +47,7 @@ recursion :
     - if ~m < head(l)~, then the minimum of the list is ~m~
     - else the minimum of ~l~ is ~head(l)~.
 
-Then start the code defining the problem by :
+At the begining of a ~minimum.py~ file, write :
 
 #+BEGIN_SRC jupyter-python :session py
 from problem_solver import Problème
@@ -60,17 +60,17 @@ from data_structures import Liste, Entier
 
 When defining a new problem, one has to define a function generating
 suitable input data for the problem. The same function is called each
-time the problem is "played". It is especially usefull when
+time the problem is selected by the user. It is especially usefull when
 various cases can arise, as it is the case for minimum finding : in
 the general case, the minimum can be the head of the list or else
-belongs to the tail of the list.
+belongs to the tail of the list. 
 
 Generating functions can be found in the ~generate.py~ file. 
 
 ** Defining the solution
 
 In order to verify student's answers, one has to provide a way of
-computing the solution of the given problem for any entry. It can be
+computing the solution of the given problem for any input. It can be
 done in various ways, either "manually" or using predefined python
 functions. For instance it's possible to simply return ~min(l)~, when ~l~
 is of type ~Liste~. One can also give the "complete" recursive
@@ -95,7 +95,7 @@ def minimum(l):
 
 If the decorator ~@Problème.recursive~ is used, it as to be given a function
 having the same arguments than the function it is applied to. 
-It outputs an int representing the data "complexity". When the function is
+It outputs an int representing the data "complexity". When this decorator is used and the function is
 used as the solution function for a problem, the user can apply it only to
 data with lower "complexity" than the current problem's difficulty.
 
