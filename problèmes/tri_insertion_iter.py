@@ -18,22 +18,22 @@ class Tableau(BaseObject):
         self.indice_insérer = 0
 
     def échange_gauche(self):
-        """ Échange l'élément actif du tableau avec celui d'avant """
+        """ Tableau -> None
+        Échange l'élément actif du tableau avec celui d'avant """
         i = self.indice_courant
         if i >= 1 and self.content[i - 1] > self.content[i]:
             self.content[i], self.content[i - 1] = self.content[i - 1], self.content[i]
             self.indice_courant -= 1
         else:
-            print(f"Non, {self.content[i]} était à la bonne place")
+            # print(f"Non, {self.content[i]} était à la bonne place")
             self.dépose()
-        return self
 
 
     def dépose(self):
-        """ Change l'élément actif """
+        """ Tableau -> None
+        Change l'élément actif """
         self.indice_insérer += 1
         self.indice_courant = self.indice_insérer
-        return self
     
 
     def __repr__(self):
