@@ -30,7 +30,7 @@ any problem. The interface is inspired by the proof assistant program
 Coq, where the current set of hypothesis on which to
 operate at any given time is shown to the user.
 
-[[file:videos/tri_insertion_iter.gif]]
+[[file:https://github.com/marzikill/step-by-step-solver/blob/master/videos/tri_insertion_iter.gif]]
 
 This program also helps to explain how to solve problems using
 recursion, as it is explained in [[Usable interface][the recursion case]].
