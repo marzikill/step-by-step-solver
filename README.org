@@ -30,6 +30,8 @@ any problem. The interface is inspired by the proof assistant program
 Coq, where the current set of hypothesis on which to
 operate at any given time is shown to the user.
 
+[[file:videos/tri_insertion_iter.gif]]
+
 This program also helps to explain how to solve problems using
 recursion, as it is explained in [[Usable interface][the recursion case]].
 
@@ -46,6 +48,8 @@ recursion :
   - compare ~m~ with ~head(l)~ :
     - if ~m < head(l)~, then the minimum of the list is ~m~
     - else the minimum of ~l~ is ~head(l)~.
+
+[[file:videos/mini_rec.gif]]
 
 At the begining of a ~minimum.py~ file, write :
 
@@ -135,6 +139,8 @@ For an example of the implementation of [[https://www.advanced-ict.info/interact
 program, see ~tri_insertion_iter.py~. Other examples can be found in
 ~minimum_iter.py~ (a ~TableauCaché~ object diplays its content only it has
 already been visited once).
+
+[[file:videos/mini_iter.gif]]
 
 * Implemented data structures
 ** Entiers

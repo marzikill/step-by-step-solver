@@ -1,7 +1,6 @@
 import random
 from problem_solver import Problème, OutputException
 from data_structures import Entier, Liste
-from generate import alternate, mini_last, mini_first
 
 class TableauCaché(Liste):
     def __init__(self, content, name = ""):
@@ -30,12 +29,9 @@ class TableauCaché(Liste):
         curseur_str = ' '*(4*self.indice_courant + 2) + "^"
         return f"\n{','.join(tab_str)}\n{curseur_str}"
 
-def gen(*args, **kwargs):
-    """ Fixe le type (Liste vers TableauCaché) et le nom renvoyés par la fonction alternate  """
-    gen_fun = alternate(mini_first, mini_last)
-    res = gen_fun(*args, **kwargs)
-    res = TableauCaché(res.content, name = 'tab')
-    return res
+def gen(difficulté):
+    return TableauCaché([random.randint(-10, 10) for _ in range(difficulté)],
+                        name= 'tab')
 
 def minimum(l):
     """ TableauCaché -> Entier 
