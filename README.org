@@ -4,9 +4,9 @@
 * Overview
 
 This program aims at helping students to understand how algorithms
-works. It also can help the teacher to explain some algorithms, since
+work. It can also help the teacher to explain some algorithms, since
 it tries to mimic what can be done on a blackboard. The user is
-proposed a problem from a set of problems, and it has to solve it
+given a problem from a set of problems, and they have to solve it
 *using only some predefined functions*. The user selects one function
 from the interface and some objects : the program then applies the
 function to its selected arguments and waits for another
@@ -24,8 +24,8 @@ solution to the program.
 
 The project has been inspired by [[https://www.advanced-ict.info/interactive/insertion_sort.html][Insertion Sort Game]], where the user
 has to sort an array using only two buttons ~Left~, and ~Stick~. The
-problem ~tri_insertion_iter~ tries to mimic this behavior and show how
-the teacher can use its owns data structures to virtually implement
+problem ~tri_insertion_iter~ tries to mimic this behavior and shows how
+the teacher can use their own data structures to virtually implement
 any problem. The interface is inspired by the proof assistant program
 Coq, where the current set of hypothesis on which to
 operate at any given time is shown to the user.
@@ -75,7 +75,7 @@ from data_structures import Liste, Entier
 
 When defining a new problem, one has to define a function generating
 suitable input data for the problem. The same function is called each
-time the problem is selected by the user. It is especially usefull when
+time the problem is selected by the user. It is especially useful when
 various cases can arise, as it is the case for minimum finding : in
 the general case, the minimum can be the head of the list or else
 belongs to the tail of the list. 
@@ -84,7 +84,7 @@ Generating functions can be found in the ~generate.py~ file.
 
 ** Defining the solution
 
-In order to verify student's answers, one has to provide a way of
+In order to verify students' answers, one has to provide a way of
 computing the solution of the given problem for any input. It can be
 done in various ways, either "manually" or using predefined python
 functions. For instance it's possible to simply return ~min(l)~, when ~l~
@@ -108,10 +108,10 @@ def minimum(l):
 
 #+RESULTS:
 
-If the decorator ~@Problème.recursive~ is used, it as to be given a function
+If the decorator ~@Problème.recursive~ is used, it has to be given a function
 having the same arguments than the function it is applied to. 
 It outputs an int representing the data "complexity". When this decorator is used and the function is
-used as the solution function for a problem, the user can apply it only to
+used as the solution function for a problem, the user can only apply it  to
 data with lower "complexity" than the current problem's difficulty.
 
 If type indications are given in the docstring or by using type hints, type
