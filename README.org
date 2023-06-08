@@ -35,6 +35,17 @@ operate at any given time is shown to the user.
 This program also helps to explain how to solve problems using
 recursion, as it is explained in [[Usable interface][the recursion case]].
 
+* Installation
+
+In a terminal :
+
+#+begin_src sh
+git clone https://github.com/marzikill/step-by-step-solver
+cd step-by-step-solver
+python cli.py
+#+end_src
+
+
 * Defining a problem
 
 Every problem should be defined in the folder ~./problèmes/~ or one of their
