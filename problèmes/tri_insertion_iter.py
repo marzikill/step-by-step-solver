@@ -42,7 +42,7 @@ class Tableau(BaseObject):
             return ', '.join(tab_str) + '|'
         tab_str[self.indice_insérer] = "|" + tab_str[self.indice_insérer]
         curseur_str = ' '*(4*self.indice_courant + 2) + "^"
-        return f"\n{','.join(tab_str)}\n{curseur_str}"
+        return f"{','.join(tab_str)}\n{curseur_str}"
 
     def __eq__(self, o): return self.content == o.content
         

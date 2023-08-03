@@ -80,6 +80,7 @@ class ProblemInstance:
         self.monde.add_function(F)
 
     def objects(self):
+        return self.monde.objects.items()
         return [(o_name, '')
                 for o_name in self.monde.object_names()]
 

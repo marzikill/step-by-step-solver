@@ -4,8 +4,10 @@ from data_structures import Liste, Entier
 
 def génère_entrée(level):
     l1 = random_liste(level//2)
+    l1.content.sort()
     l1.name = "l1"
     l2 = random_liste(level//2 + level%2)
+    l2.content.sort()
     l2.name = "l2"
     return l1, l2
 
