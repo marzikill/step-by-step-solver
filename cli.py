@@ -79,7 +79,7 @@ class ProblemSolverView:
                                                                    hl=[self.controller.selected_pb],
                                                                    view=self))
         self.pb_objects_chooser.original_widget = urwid.Padding(menu(u' Données du problème ',
-                                                                     self.controller.pb.objects(),
+                                                                     [(f"{name} : {obj}", "") for name, obj in self.controller.pb.objects()],
                                                                      self.controller.sel_data,
                                                                      hl=self.controller.selected_data,
                                                                      view=self))

@@ -10,8 +10,12 @@ window.rowconfigure(0, weight=1)
 mainframe = LabelFrame(window, bd = 10)
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
 mainframe.rowconfigure(0, weight=1)
-mainframe.columnconfigure(0, weight=0, minsize=200)
+mainframe.rowconfigure(1, weight=1)
+mainframe.rowconfigure(2, weight=1)
+mainframe.rowconfigure(3, weight=1, minsize = 40)
+mainframe.columnconfigure(0, weight=1, minsize=300)
 mainframe.columnconfigure(1, weight=1)
+mainframe.columnconfigure(2, weight=1)
 
 def get_selection(lst):
     """ Listbox | OrderedTreeview -> str
@@ -29,42 +33,49 @@ class PanneauChoix:
     def __init__(self, parent, controller):
         self.controller = controller 
         # Menu de choix
-        panel = LabelFrame(parent, text="Choix du problème",
-                                bd=10,
-                                width=100,
-                                height=200,
-                                background="yellow")
-        panel.grid(column=0, row=0, sticky=(N, W, E, S))
-        panel.columnconfigure(0, weight=1)
-        panel.rowconfigure(0, weight=1)
+        # panel = LabelFrame(parent, text="Choix du problème",
+        #                         bd=10,
+        #                         width=500,
+        #                         height=250,
+        #                         background="yellow")
+        # panel.grid(column=0, row=0, sticky=(N, W, E, S))
+        # panel.columnconfigure(0, weight=1)
+        # panel.rowconfigure(0, weight=1)
 
+        frame = LabelFrame(parent, text="Choix du problème")
+        frame.grid(column=0, row=0, rowspan=3, sticky=(N, W, E, S))
         choices = StringVar(value=[pb_name for pb_name in ProblemIndex])
-        self.liste_problèmes = Listbox(panel,
+        self.liste_problèmes = Listbox(frame,
                                        listvariable=choices,
-                                       exportselection=0)
-        self.liste_problèmes.grid(column=0, row=0, sticky=(N, W, E, S))
+                                       exportselection=0,
+                                       font="consolas 18")
+        self.liste_problèmes.pack(fill="both", expand="True")
+        self.liste_problèmes.bind("<Double-1>", lambda event: self.send_problem())
 
-        self.load_button = ttk.Button(panel,
+        self.load_button = ttk.Button(parent,
                                       text='Charger',
                                       command=lambda: self.send_problem())
-        self.load_button.grid(column=0, row=1, sticky=(N, W, E, S))
+        self.load_button.grid(column=0, row=3, sticky=(N, W, E, S))
 
     def send_problem(self):
         self.controller.load_problem(get_selection(self.liste_problèmes))
 
 class OrderedTreeview(ttk.Treeview):
+    """
+    Custom Treeview object to keep track of the selected items in order.
+    """
     def __init__(self, master=None, **kw):
         super().__init__(master, **kw)
         self.selected_items = []
         self.bind("<<TreeviewSelect>>", self.on_select)
 
     def on_select(self, event):
-        """
-        Custom method to keep track of the selected items in order.
-        """
         # Clear the list and add selected items in the order of selection
         news = [self.item(item, "values")[0] for item in self.selection()]
-        last = set(news).symmetric_difference(set(self.selected_items)).pop()
+        last = set(news).symmetric_difference(set(self.selected_items))
+        if not last:
+            return
+        last = last.pop()
         if last not in self.selected_items:
             self.selected_items.append(last)
         else:
@@ -78,62 +89,73 @@ class PanneauRésolution:
         self.controller = controller
 
         # Menu de résolution
-        panel = LabelFrame(mainframe, text="Résolution du problème",
-                                bd=10,
-                                width = 200,
-                                height = 200,
-                                background="blue")
-        panel.grid(column=1, row=0, sticky=(N, W, E, S))
+        # panel = LabelFrame(mainframe, text="Résolution du problème",
+        #                         bd=10,
+        #                         width = 200,
+        #                         height = 100,
+        #                         background="blue")
+        # panel.grid(column=1, row=0, sticky=(N, W, E, S))
 
-        panel.columnconfigure(0, weight=1)
-        panel.rowconfigure(0, weight=1)
-        panel.rowconfigure(1, weight=1)
-        panel.rowconfigure(2, weight=1)
+        # panel.columnconfigure(0, weight=1)
+        # panel.rowconfigure(0, weight=1)
+        # panel.rowconfigure(1, weight=2)
+        # panel.rowconfigure(2, weight=3)
 
-        panel_1 = LabelFrame(panel, text="Données du problème",
-                                bd=10,
-                                width = 200,
-                                height = 200,
-                                background="green")
-        panel_1.grid(column=0, row=0, sticky=(N, W, E, S))
-        panel_1.columnconfigure(0, weight=1)
-        panel_1.rowconfigure(0, weight=1)
+        # panel_1 = LabelFrame(parent, text="Données du problème",
+        #                         bd=10,
+        #                         width = 200,
+        #                         height = 100,
+        #                         background="green")
+        # panel_1.grid(column=1, columnspan=2, row=0, sticky=(N, W, E, S))
+        # panel_1.columnconfigure(0, weight=1)
+        # panel_1.rowconfigure(0, weight=1)
 
-        self.donnees = OrderedTreeview(panel_1,
+        frame = LabelFrame(parent, text="Données du problème")
+        frame.grid(column=1, columnspan=2, row=0, sticky=(N, W, E, S))
+        self.donnees = OrderedTreeview(frame,
                                        columns=("var", "data"), show="headings")
+        self.donnees.pack(fill="both", expand="True")
         self.donnees.heading('var', text='Variable')
         self.donnees.heading('data', text='Contenu')
-        self.donnees.grid(column=0, row=0, sticky=(N, W, E, S))
         
-        panel_2 = LabelFrame(panel, text="Solutions du problème",
-                                bd=10,
-                                width = 200,
-                                height = 200,
-                                background="red")
-        panel_2.grid(column=0, row=1, sticky=(N, S, W, E))
-        panel_2.columnconfigure(0, weight=1)
-        panel_2.rowconfigure(0, weight=1)
-        self.solution = Listbox(panel_2, exportselection=0)
-        self.solution.grid(column=0, row=0, sticky=(N, W, E, S))
+        # panel_2 = LabelFrame(panel, text="Solutions du problème",
+        #                         bd=10,
+        #                         width = 200,
+        #                         height = 100,
+        #                         background="red")
+        # panel_2.grid(column=0, row=1, sticky=(N, S, W, E))
+        # panel_2.columnconfigure(0, weight=1)
+        # panel_2.rowconfigure(0, weight=1)
+        frame = LabelFrame(parent, text="Solutions du problème")
+        frame.grid(column=1, columnspan=2, row=1, sticky=(N, W, E, S))
+        self.solution = Listbox(frame, exportselection=0,
+                                font = "consolas 18")
+        self.solution.pack(fill="both", expand="True")
 
-        panel_3 = LabelFrame(panel, text="Interface du problème",
-                                bd=10,
-                                width = 200,
-                                height = 200,
-                                background="white")
-        panel_3.grid(column=0, row=2, sticky=(N, S, W, E))
-        panel_3.columnconfigure(0, weight=1)
-        panel_3.columnconfigure(1, weight=1)
-        panel_3.rowconfigure(0, weight=1)
-        panel_3.rowconfigure(1, weight=1)
-        self.interface = Listbox(panel_3, exportselection=0)
-        self.interface.grid(column=0, columnspan=2, row=0, sticky=(N, W, E, S))
-        validate_button = Button(panel_3, text = "Valider",
+
+        # panel_3 = LabelFrame(panel, text="Interface du problème",
+        #                         bd=10,
+        #                         width = 200,
+        #                         height = 100,
+        #                         background="white")
+        # panel_3.grid(column=0, row=2, sticky=(N, S, W, E))
+        # panel_3.columnconfigure(0, weight=1)
+        # panel_3.columnconfigure(1, weight=1)
+        # panel_3.rowconfigure(0, weight=1)
+        # panel_3.rowconfigure(1, weight=1)
+        frame = LabelFrame(parent, text="Interface du problème")
+        frame.grid(column=1, columnspan=2, row=2, sticky=(N, W, E, S))
+        self.interface = Listbox(frame, exportselection=0,
+                                 font="consolas 18")
+        self.interface.pack(fill="both", expand="True")
+ 
+        validate_button = Button(parent, text = "Valider",
+                                 height = 1,
                                  command=lambda : self.send_sel())
-        validate_button.grid(column=0, row=1, sticky=(N, W, E, S))
-        help_button = Button(panel_3, text = "Documentation",
+        validate_button.grid(column=1, row=3, sticky=(N, W, E, S))
+        help_button = Button(parent, text = "Documentation",
                                  command=lambda : print("help"))
-        help_button.grid(column=1, row=1, sticky=(N, W, E, S))
+        help_button.grid(column=2, row=3, sticky=(N, W, E, S))
 
 
     def load_problem(self, pb):
@@ -141,7 +163,8 @@ class PanneauRésolution:
         print("Chargement des données du problème", pb_name)
         for ob in pb.objects():
             print(ob)
-            self.donnees.insert("", "end", values = ob)
+            self.donnees.insert("", "end", values = ob, tag="font")
+            self.donnees.tag_configure('font', font="consolas 18")
 
         print("Chargement de la solution du problème", pb_name)
         for ob in pb.sol:
